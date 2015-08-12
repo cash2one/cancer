@@ -1,0 +1,10 @@
+branch-defaults:
+  default:
+    environment: null
+global:
+  application_name: cancer
+  default_ec2_keyname: aws-eb
+  default_platform: 64bit Amazon Linux 2015.03 v1.4.6 running Python 2.7
+  default_region: ap-northeast-1
+  profile: eb-cli
+  sc: null

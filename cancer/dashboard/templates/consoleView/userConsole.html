@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+<html>
+{% load staticfiles %}
+{% block script %}
+
+<script src="{% static "js/jquery.dataTables.js" %}"></script>
+<link rel="stylesheet" href="{% static "css/jquery.dataTables.css" %}" />
+
+
+{% endblock%}
+
+
+{% block content %}
+
+
+        <div class="blogsHero" style="background-image:url({% static "images/blog-bg.jpg" %});">
+           <div class="small-12 columns tableCell">
+              <div class="text-center labHeroText cell">
+                <h1>Welcome {{user.username}}!</h1>
+                <h3></h3>
+              </div>
+            </div>
+         </div>
+
+
+<ul class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li><a href="/virtual">Planned MiSeq</a></li>
+  <li class="active">User Console</li>
+</ul>
+       
+
+<div>
+        <div class="small-12 columns">
+             <div class="small-12 medium-4 columns blog_inspire">
+               <a href="/virtual/console/log/">
+                 <div class="blog_mainImage" style="background-image:url({% static "images/textures/1.jpg"%});"><h2>Add new Log</h2></div>
+               </a>
+               <div class="blogs_description">
+                 <h5></h5>
+    
+                 <a href="/virtual/console/log/" class="blog_viewAll" style="background:#808080;">Logging Center</a>
+               </div>
+             </div>
+            
+             <div class="small-12 medium-4 columns blog_inspire">
+               <a href="/virtual/console/#experiments">
+                 <div class="blog_mainImage" style="background-image:url({% static "images/textures/2.jpg"%});"><h2>My Experiments</h2></div>
+               </a>
+               <div class="blogs_description">
+                 <h5></h5>
+
+                 <a href="/virtual/console/myexperiments/" class="blog_viewAll" style="background:#808080;">Experiment Management Center</a>
+               </div>
+             </div>
+             
+
+             <div class="small-12 medium-4 columns blog_inspire">
+
+               <a href="/virtual/console/account/#setting">
+                 <div class="blog_mainImage" style="background-image:url({% static "images/textures/3.jpg"%});"><h2>Account Settings</h2></div>
+               </a>
+               <div class="blogs_description">
+                 <h5></h5>
+
+                 <a href="/virtual/console/account/" class="blog_viewAll" style="background:#808080;">Account Center</a>
+               </div>
+             </div>
+           
+
+         </div>
+</div>
+
+
+<div  style="width: 100%;margin-left:auto;margin-right:auto;text-align:center;">
+<hr>
+<div class="jumbotron" id='experiments'>
+  <h2 align='middle'>My Experiments:</h2>
+<hr>
+
+{%include "exp_table.html"%}
+
+</div>
+<hr>
+
+
+
+{% endblock %}
+
+</body></html>
