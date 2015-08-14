@@ -5,7 +5,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Dashboard (Beta)</title>
+    <title>舶众 | 电子病历检索系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.4 -->
@@ -41,27 +41,44 @@
     <link href="{% static "AdminLTE/plugins/datatables/dataTables.bootstrap.css" %}" rel="stylesheet" type="text/css" />
 
 
-<style>
-div.dataTables_filter {
-    text-align: left;
-}
-.col-sm-6 {
-    width: 20%;
-}
-</style>
+    <link href="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.min.css" %}" rel="stylesheet" type="text/css" />
+    <link href="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.print.css" %}" rel="stylesheet" type="text/css" media="print" />
+
+    <style>
+	div.dataTables_filter {
+	    text-align: left;
+	}
+	.col-sm-6 {
+	    width: 20%;
+	}
+    </style>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+    //Check if the current URL contains '#'
+    if(document.URL.indexOf("#")==-1){
+        // Set the URL to whatever it was plus "#".
+        url = document.URL+"#";
+        location = "#";
+
+        //Reload the page
+        location.reload(true);
+    }
+  });
+  </script>
 
 
   </head>
-  <body class="skin-blue sidebar-mini">
+  <body class="skin-blue sidebar-mini wysihtml5-supported fixed">
     <div class="wrapper">
 
       <header class="main-header">
         <!-- Logo -->
         <a href="/" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>MMS</b></span>
+          <span class="logo-mini"><b>舶众</b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Pfizer</b>&nbsp;MMS</span>
+          <span class="logo-lg"><b>舶众</b>&nbsp;肿瘤数据平台</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -74,75 +91,6 @@ div.dataTables_filter {
               <!-- Messages: style can be found in dropdown.less-->
               <!-- Notifications: style can be found in dropdown.less -->
               <!-- Tasks: style can be found in dropdown.less -->
-              <li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">9</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 9 tasks</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Design some buttons
-                            <small class="pull-right">20%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">20% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Create a nice theme
-                            <small class="pull-right">40%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">40% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Some task I need to do
-                            <small class="pull-right">60%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">60% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Make beautiful transitions
-                            <small class="pull-right">80%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">80% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                    </ul>
-                  </li>
-                  <li class="footer">
-                    <a href="#">View all tasks</a>
-                  </li>
-                </ul>
-              </li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -152,21 +100,16 @@ div.dataTables_filter {
                   <!-- User image -->
                   <li class="user-header">
                     <p>
-                      <p>Hi, {{idms.FirstName}} {{idms.LastName}}</p>
-		      <small>NTID: {{user.username}}</small><br>
-                      <small>Email: {{idms.EmailAddress}}</small><br>
-		      <small>Organization: {{idms.Organization}}</small><br>
-		      <small>Approval Status: {{idms.get_approvalStatus_display}}</small>
+                      <p>您好, {{idms.FirstName}} {{idms.LastName}}</p>
+		                  <small>用户名: {{user.username}}</small><br>
+                      <small>邮箱: {{idms.EmailAddress}}</small><br>
 		    </p>
                   </li>
                   <!-- Menu Body -->
                   <!-- Menu Footer-->
                   <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="/TODO/" class="btn btn-default btn-flat">Profile</a>
-                    </div>
                     <div class="pull-right">
-                      <a href="/accounts/logout/" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="/accounts/logout/" class="btn btn-default btn-flat">登出</a>
                     </div>
                   </li>
                 </ul>
@@ -184,79 +127,58 @@ div.dataTables_filter {
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
           <!-- Sidebar user panel -->
-          <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..." />
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
-          <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+            <li class="header">目录</li>
             <li class="active treeview">
               <a href="/">
-                <i class="fa fa-bank"></i> <span>Main</span> <i class="fa fa-angle-left pull-right"></i>
+                <i class="fa fa-bank"></i> <span>个人主页</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="/virtual/search/"><i class="fa fa-star-half-o"></i> Planned MiSeq</a></li>
-                <li><a href="/physical/search/"><i class="fa fa-star"></i> Finished MiSeq</a></li>
+		            <li><a href="/dashboard/"><i class="fa fa-home"></i> 控制台</a></li>
+                <li><a href="/dashboard/#mypatient"><i class="fa fa-star"></i> 我的病人</a></li>
+                <li><a href="/admin/"><i class="fa fa-star"></i> 管理员界面</a></li>
               </ul>
             </li>
             <li class="active treeview">
-              <a href="/console/">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+              <a href="#">
+                <i class="fa fa-dashboard"></i> <span>数据库</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/virtual/new/"><i class="fa fa-flask"></i> Add Experiments</a></li>
-                <li><a href="/virtual/console/log/"><i class="fa fa-edit"></i> Logs</a></li>
-                <li><a href="/physical/search/"><i class="fa fa-cloud-download"></i> Timeline</a></li>
+                <li><a href="/dashboard/patient/"><i class="fa fa-edit"></i> 病人基本信息</a></li>
+                <li><a href="/dashboard/cancer/"><i class="fa fa-edit"></i> 肿瘤基本信息</a></li>
+                <li><a href="/dashboard/symptom/"><i class="fa fa-edit"></i> 症状与体征</a></li>
+                <li><a href="/dashboard/treatment/"><i class="fa fa-edit"></i> 治疗情况</a></li>
+                <li><a href="/dashboard/test/"><i class="fa fa-edit"></i> 辅助检查</a></li>
+                <li><a href="/dashboard/followup/"><i class="fa fa-edit"></i> 随访情况</a></li>
+                <li><a href="/dashboard/questionnaire/"><i class="fa fa-edit"></i> 问卷评分</a></li>
               </ul>
             </li>
-
-	     <li class="active treeview">
-              <a href="/console/account/">
-                <i class="fa fa-cog"></i> <span>Account Setting</span> <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="/TODO/"><i class="fa  fa-info-circle"></i> Information</a></li>
-                <li><a href="/TODO/"><i class="fa fa-bell-o"></i> Notification</a></li>
-                <li><a href="/TODO/"><i class="fa  fa-gears"></i> Setting</a></li>
-              </ul>
-            </li>
-
 
             <li class="treeview">
-              <a href="#">
+              <a href="#charts">
                 <i class="fa fa-pie-chart"></i>
-                <span>Charts</span>
-                <i class="fa fa-angle-left pull-right"></i>
+                <span>统计分析</span>
               </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-                <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-                <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-              </ul>
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-edit"></i> <span>Actions</span>
+                <i class="fa fa-edit"></i> <span>操作</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/virtual/new/"><i class="fa fa-circle-o"></i> Add New Experiment</a></li>
+                <li><a href="/virtual/new/"><i class="fa fa-circle-o"></i> 下载数据库</a></li>
               </ul>
             </li>
+            
+<!--
             <li>
-              <a href="pages/calendar.html">
+              <a href="#cal">
                 <i class="fa fa-calendar"></i> <span>Calendar</span>
-                <small class="label pull-right bg-red">3</small>
-              </a>
+		{% if due_in_2 > 0  %}
+		<small class="label pull-right bg-red">{{due_in_2}}</small>
+        	{% endif %}
+	      </a>
             </li>
             <li class="treeview">
               <a href="#">
@@ -271,29 +193,23 @@ div.dataTables_filter {
                 <li><a href="/virtual/treatments/"><i class="fa fa-circle-o"></i> Treatments</a></li>
               </ul>
             </li>
-
+-->
 
 	    <li class="treeview">
               <a href="/TODO/">
-                <i class="fa fa-database"></i> <span>Documentation</span>
+                <i class="fa ion-medkit"></i> <span>教程</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
 	    <ul class="treeview-menu">
-              <li><a href="/TODO/"><i class="fa fa-circle-o text-red"></i> <span> About</span></a></li>
-              <li><a href="/TODO/"><i class="fa fa-circle-o text-yellow"></i> <span> User Manual</span></a></li>
-              <li><a href="/TODO/"><i class="fa fa-circle-o text-aqua"></i> <span> Developer Manual</span></a></li>
+              <li><a href="/help/#about"><i class="fa fa-circle-o text-red"></i> <span> 有关本系统</span></a></li>
+              <li><a href="/TODO/"><i class="fa fa-circle-o text-yellow"></i> <span> 用户操作手册</span></a></li>
+              <li><a href="/TODO/"><i class="fa fa-circle-o text-aqua"></i> <span> 开发指南</span></a></li>
           </ul>
 	</li>
 
-        <li class="header">EXTERNAL LINKS</li>
-              <li><a href="http://idms.pfizer.com/"><i class="fa fa-circle-o text-red"></i> <span>IDMS</span></a></li>
-              <li><a href="http://lj-compbio.pfizer.com/"><i class="fa fa-circle-o text-yellow"></i> <span>Computational Biology</span></a></li>
-              <li><a href="http://idms.pfizer.com/funcgen/"><i class="fa fa-circle-o text-aqua"></i> <span>Functional Genomics Center</span></a></li>
-	      <li><a href="https://password.pfizer.com/"><i class="fa fa-circle-o text-aqua"></i> <span>Password On Demand</span></a></li>
-
-	<li class="header">USEFUL LINKS</li>
-              <li><a href="/help/"><i class="fa fa-question"></i> <span>Help</span></a></li>
-
+        <li class="header">其他</li>
+              <li><a href="http://idms.pfizer.com/"><i class="fa fa-circle-o text-red"></i> <span> 联系我们</span></a></li>
+              <li><a href="/TODO/"><i class="fa fa-circle-o text-yellow"></i> <span> 意见反馈</span></a></li>
 
         </section>
         <!-- /.sidebar -->
@@ -304,12 +220,12 @@ div.dataTables_filter {
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Dashboard
-            <small>Control panel</small>
+            控制台
+            <small>电子病历 从未如此优雅</small>
           </h1>
           <ol class="breadcrumb">
-            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+            <li><a href=""><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li class="active">控制台</li>
           </ol>
         </section>
 
@@ -321,39 +237,39 @@ div.dataTables_filter {
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>Home</h3>
-                  <p>Back to main page</p>
+                  <h3>返回</h3>
+                  <p>回控制台页面</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-ios-home-outline"></i>
                 </div>
-                <a href="/" class="small-box-footer">Go <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/dashboard/" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>Search All</h3>
-                  <p>Search existing experiments</p>
+                  <h3>我的病人</h3>
+                  <p>查看我的病人信息</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-funnel"></i>
                 </div>
-                <a href="/virtual/search/" class="small-box-footer">Go <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/dashboard/#mypatient" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-	    <div class="small-box bg-yellow">
+	           <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>Logs</h3>
-                  <p>View and edit logs </p>
+                  <h3>搜索 </h3>
+                  <p>自定义搜索 </p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-ios-book-outline"></i>
+                  <i class="ion ion-plus-round"></i>
                 </div>
-                <a href="/TODO/" class="small-box-footer">Go <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="#" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
             
@@ -361,24 +277,23 @@ div.dataTables_filter {
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3>File</h3>
-                  <p>Import and export</p>
+                  <h3>管理员</h3>
+                  <p>数据库管理</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-ios-cloud-download-outline"></i>
                 </div>
-                <a href="/TODO/" class="small-box-footer">Go <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/admin/" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
           </div><!-- /.row -->
           <!-- Main row -->
 
-
         <!-- Content Header (Page header) -->
-        <section class="content-header">
+        <section id='mypatient' class="content-header">
           <h1>
-            My Experiments
-            <small>type to search</small>
+            我的病人
+            <small>输入以搜索</small>
           </h1>
         </section>
 
@@ -391,44 +306,89 @@ div.dataTables_filter {
                 <div class="box-header">
                 </div><!-- /.box-header -->
                 <div class="box-body">
-<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" >
+<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Project</th>
-                <th>Creation Date</th>
-                <th>Sample Count</th>
-                <th>Investigators</th>
-                <th>Created By</th>
-                <th>Action</th>
+                <th>数据库编号</th>
+                <th>姓名</th>
+                <th>病历号</th>
+                <th>手术日期</th>
+                <th>术者</th>
+                <th>手术入路</th>
+                <th>手术部位</th>
+                <th>手术方式</th>
+                <th>肿瘤包膜破损情况</th>
+                <th>为保证边界牺牲的组织</th>
+                <th>术中骨水泥强化</th>
+                <th>术中射频消融</th>
+                <th>手术总时间（min）</th>
+                <th>出血量（ml）</th>
+                <th>异体血（ml）</th>
+                <th>术中并发症</th>
+                <th>术中备注</th>
+                <th>术后并发症</th>
+                <th>动脉栓塞（方式）</th>
+                <th>动脉栓塞（动脉名称）</th>
+                <th>经皮骨水泥加强（节段）</th>
+                <th>经皮骨水泥加强（部位）</th>
+                <th>支具支持治疗（支具类型）</th>
+                <th>支具支持治疗（开始年月）</th>
+                <th>放疗（总剂量 Gy）</th>
+                <th>放疗（疗程）</th>
+                <th>放疗（开始日期）</th>
+                <th>化疗（方案）</th>
+                <th>化疗（开始日期）</th>
+                <th>其他治疗（药物）</th>
+                <th>其他治疗（开始日期）</th>
+                <th>其他治疗（结束日期）</th>
+                <th>其他描述</th>
+
             </tr>
         </thead>
 
-        <tfoot>
-        </tfoot>
 
         <tbody>
-                {% for experiment in experiments %}
-                        <tr>
-                                <td><a href="{{experiment.get_absolute_url}}">{{experiment.title}}</a></td>
-                                <td>{% autoescape off %}{{experiment.get_taged_project_name}} {% endautoescape %}</td>
-                                <td>{{ experiment.get_standard_created_date }}</td>
-                                <td>{{ experiment.sample_set.count }}</td>
-                                <td>{% autoescape off %}{{experiment.get_taged_investigator_name}} {% endautoescape %}</td>
-                                <td>{% autoescape off %}{{experiment.get_taged_created_by_name}}{% endautoescape %}</td>
-                                 <td>
-                                {%if experiment.created_by.NTID.upper == user.username.upper or user.username.upper in auth_users|key:experiment.experiment_id%}
-                                <a href="/virtual/edit/{{experiment.experiment_id}}/" type="submit" class="btn btn-info btn-xs" style="position:relative;margin-right: 5px;">Edit Experiment</a>
-                                <a href="/virtual/get/{{experiment.experiment_id}}/#sample" type="submit" class="btn btn-info btn-xs" style="position:relative;margin-right: 5px;">Edit sample</a>
-                                {%endif%}
-                                <a href="/virtual/export/{{experiment.experiment_id}}/samplesheet/" class="btn btn-info btn-xs" style="position:relative;margin-right: 5px;">SampleSheet</a>
-                                </td>
+                {% for obj in objs %}
+                  <tr>
+                      <td>{{obj.DB_ID}}</td>
+                      <td>{{obj.name}}</td>
+                      <td>{{obj.EMR_id}}</td>
+                      <td>{{obj.surgery_date}}</td>
+                      <td>{{obj.surgeon}}</td>
+                      <td>{{obj.get_approach_display}}</td>
+                      <td>{{obj.get_location_display}}</td>
+                      <td>{{obj.get_method_display}}</td>
+                      <td>{{obj.envelope_damage}}</td>
+                      <td>{{obj.sacrifice}}</td>
+                      <td>{{obj.bone_cement}}</td>
+                      <td>{{obj.radiofrequency}}</td>
+                      <td>{{obj.total_time}}</td>
+                      <td>{{obj.bleeding_vol}}</td>
+                      <td>{{obj.allogeneic_blood}}</td>
+                      <td>{{obj.surgery_complication}}</td>
+                      <td>{{obj.surgery_comment}}</td>
+                      <td>{{obj.get_post_complication_display}}</td>
+                      <td>{{obj.arterial_embolization_method}}</td>
+                      <td>{{obj.arterial_embolization_name}}</td>
+                      <td>{{obj.bone_cement_num}}</td>
+                      <td>{{obj.get_bone_cement_location_display}}</td>
+                      <td>{{obj.get_support_therapy_type_display}}</td>
+                      <td>{{obj.support_therapy_start_date}}</td>
+                      <td>{{obj.radiotherapy_dose}}</td>
+                      <td>{{obj.radiotherapy_course}}</td>
+                      <td>{{obj.radiotherapy_start_date}}</td>
+                      <td>{{obj.chemotherapy_plan}}</td>
+                      <td>{{obj.chemotherapy_start_date}}</td>
+                      <td>{{obj.get_other_treatment_drug_display}}</td>
+                      <td>{{obj.other_treatment_start_date}}</td>
+                      <td>{{obj.other_treatment_end_date}}</td>
+                      <td>{{obj.comment}}</td>
 
-                        </tr>
+                  </tr>
 
                 {% endfor %}
         </tbody>
-</table>
+    </table>
 
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
@@ -437,248 +397,66 @@ div.dataTables_filter {
         </section><!-- /.content -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div class="row">
             <!-- Left col -->
             <section class="col-lg-7 connectedSortable">
-              <!-- Custom tabs (Charts with tabs)-->
-              <div class="nav-tabs-custom">
-                <!-- Tabs within a box -->
-                <ul class="nav nav-tabs pull-right">
-                  <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
-                  <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
-                  <li class="pull-left header"><i class="fa fa-user"></i> My Activity</li>
-                </ul>
-                <div class="tab-content no-padding">
-                  <!-- Morris chart - Sales -->
-                  <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
-                  <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
-                </div>
-              </div><!-- /.nav-tabs-custom -->
-
               <!-- TO DO List -->
               <div class="box box-primary">
                 <div class="box-header">
                   <i class="ion ion-clipboard"></i>
                   <h3 class="box-title">Upcoming Experiments</h3>
-                  <div class="box-tools pull-right">
-                    <ul class="pagination pagination-sm inline">
-                      <li><a href="#">&laquo;</a></li>
-                      <li><a href="#">1</a></li>
-                      <li><a href="#">2</a></li>
-                      <li><a href="#">3</a></li>
-                      <li><a href="#">&raquo;</a></li>
-                    </ul>
-                  </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <ul class="todo-list">
-                    <li>
-                      <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                      <!-- checkbox -->
-                      <input type="checkbox" value="" name="" />
-                      <!-- todo text -->
-                      <span class="text">Design a nice theme</span>
-                      <!-- Emphasis label -->
-                      <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                      <!-- General tools such as edit or delete-->
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                      <input type="checkbox" value="" name="" />
-                      <span class="text">Make the theme responsive</span>
-                      <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                      <input type="checkbox" value="" name="" />
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                      <input type="checkbox" value="" name="" />
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                      <input type="checkbox" value="" name="" />
-                      <span class="text">Check your messages and notifications</span>
-                      <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                      <input type="checkbox" value="" name="" />
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
+			{% autoescape off %}{{ todo }}{% endautoescape %} 
                   </ul>
                 </div><!-- /.box-body -->
+		<!--
                 <div class="box-footer clearfix no-border">
                   <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
                 </div>
+		-->
               </div><!-- /.box -->
 
-              <!-- quick email widget -->
+
+		<!-- TABLE: LATEST ORDERS -->
               <div class="box box-info">
-                <div class="box-header">
-                  <i class="fa fa-envelope"></i>
-                  <h3 class="box-title">Quick Email</h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                  </div><!-- /. tools -->
-                </div>
-                <div class="box-body">
-                  <form action="#" method="post">
-                    <div class="form-group">
-                      <input type="email" class="form-control" name="emailto" placeholder="Email to:" />
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control" name="subject" placeholder="Subject" />
-                    </div>
-                    <div>
-                      <textarea class="textarea" placeholder="Message" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                    </div>
-                  </form>
-                </div>
-                <div class="box-footer clearfix">
-                  <button class="pull-right btn btn-default" id="sendEmail">Send <i class="fa fa-arrow-circle-right"></i></button>
-                </div>
-              </div>
-
-            </section><!-- /.Left col -->
-            <!-- right col (We are only adding the ID to make the widgets sortable)-->
-            <section class="col-lg-5 connectedSortable">
-
-
-              <!-- Calendar -->
-              <div class="box box-solid bg-green-gradient">
-                <div class="box-header">
-                  <i class="fa fa-calendar"></i>
-                  <h3 class="box-title">Calendar</h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <!-- button with a dropdown -->
-                    <div class="btn-group">
-                      <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></button>
-                      <ul class="dropdown-menu pull-right" role="menu">
-                        <li><a href="#">Add new event</a></li>
-                        <li><a href="#">Clear events</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">View calendar</a></li>
-                      </ul>
-                    </div>
-                    <button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div><!-- /. tools -->
+                <div class="box-header with-border">
+                 <i class="ion ion-android-cloud-done"></i> 
+		 <h3 class="box-title">Recently Finished Experiment</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
                 </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <!--The calendar -->
-                  <div id="calendar" style="width: 100%"></div>
+                <div class="box-body">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <thead>
+                        <tr>
+                          <th>Project</th>
+                          <th>Title</th>
+                          <th>Comment</th>
+			  <th>Flag</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% autoescape off %}{{ finished }}{% endautoescape %}
+		      </tbody>
+                    </table>
+                  </div><!-- /.table-responsive -->
                 </div><!-- /.box-body -->
-                <div class="box-footer text-black">
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <!-- Progress bars -->
-                      <div class="clearfix">
-                        <span class="pull-left">Task #1</span>
-                        <small class="pull-right">90%</small>
-                      </div>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 90%;"></div>
-                      </div>
-
-                      <div class="clearfix">
-                        <span class="pull-left">Task #2</span>
-                        <small class="pull-right">70%</small>
-                      </div>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 70%;"></div>
-                      </div>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                      <div class="clearfix">
-                        <span class="pull-left">Task #3</span>
-                        <small class="pull-right">60%</small>
-                      </div>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 60%;"></div>
-                      </div>
-
-                      <div class="clearfix">
-                        <span class="pull-left">Task #4</span>
-                        <small class="pull-right">40%</small>
-                      </div>
-                      <div class="progress xs">
-                        <div class="progress-bar progress-bar-green" style="width: 40%;"></div>
-                      </div>
-                    </div><!-- /.col -->
-                  </div><!-- /.row -->
-                </div>
+                <div class="box-footer clearfix">
+                  <a href="/TODO/" class="btn btn-sm btn-default btn-flat pull-right">View All</a>
+                </div><!-- /.box-footer -->
               </div><!-- /.box -->
 
 
-		              <!-- PRODUCT LIST -->
+		<!-- PRODUCT LIST -->
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Recently Added Products</h3>
+                 <i class="ion ion-document-text"></i> 
+		 <h3 class="box-title">Recent Logs</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -686,61 +464,134 @@ div.dataTables_filter {
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <ul class="products-list product-list-in-box">
-                    <li class="item">
-                      <div class="product-img">
-                        <img src="dist/img/default-50x50.gif" alt="Product Image" />
-                      </div>
+                  {% for p in posts|slice:":5" %}
+		    <li class="item">
                       <div class="product-info">
-                        <a href="javascript::;" class="product-title">Samsung TV <span class="label label-warning pull-right">$1800</span></a>
+                        <a href="/virtual/get/{{p.related_exp.experiment_id}}/" class="product-title">{{p.subject}}</a>
                         <span class="product-description">
-                          Samsung 32" 1080p 60Hz LED Smart HDTV.
+                          {{p.content}}
+				<p >Posted by {% autoescape off %}{{p.created_by.get_taged_investigator_name}}{% endautoescape %} on {{p.created_date}}</p>
+                		{%if p.updated_by.NTID != None %}
+                		<p>Last Modified by {% autoescape off %}{{p.updated_by.get_taged_investigator_name}}{% endautoescape %} on {{p.updated_date}}</p>
+                		{%endif%}
+
                         </span>
                       </div>
                     </li><!-- /.item -->
-                    <li class="item">
-                      <div class="product-img">
-                        <img src="dist/img/default-50x50.gif" alt="Product Image" />
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript::;" class="product-title">Bicycle <span class="label label-info pull-right">$700</span></a>
-                        <span class="product-description">
-                          26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                        </span>
-                      </div>
-                    </li><!-- /.item -->
-                    <li class="item">
-                      <div class="product-img">
-                        <img src="dist/img/default-50x50.gif" alt="Product Image" />
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript::;" class="product-title">Xbox One <span class="label label-danger pull-right">$350</span></a>
-                        <span class="product-description">
-                          Xbox One Console Bundle with Halo Master Chief Collection.
-                        </span>
-                      </div>
-                    </li><!-- /.item -->
-                    <li class="item">
-                      <div class="product-img">
-                        <img src="dist/img/default-50x50.gif" alt="Product Image" />
-                      </div>
-                      <div class="product-info">
-                        <a href="javascript::;" class="product-title">PlayStation 4 <span class="label label-success pull-right">$399</span></a>
-                        <span class="product-description">
-                          PlayStation 4 500GB Console (PS4)
-                        </span>
-                      </div>
-                    </li><!-- /.item -->
+		  {% endfor %}
                   </ul>
                 </div><!-- /.box-body -->
                 <div class="box-footer text-center">
-                  <a href="javascript::;" class="uppercase">View All Products</a>
+                  <a href="/virtual/console/log/" class="uppercase">View All</a>
                 </div><!-- /.box-footer -->
               </div><!-- /.box -->
+
+
+            </section><!-- /.Left col -->
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <section class="col-lg-5 connectedSortable">
+
+
+              <!-- Calendar -->
+              <div id='cal' class="box box-solid bg-green-gradient">
+                <div class="box-header">
+                  <i class="fa fa-calendar"></i>
+                  <h3 class="box-title">Calendar</h3>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <!-- button with a dropdown -->
+                    <button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div><!-- /. tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <!--The calendar -->
+                  <div id="calendar1" style="width: 100%"></div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
 
             </section><!-- right col -->
           </div><!-- /.row (main row) -->
 
         </section><!-- /.content -->
+
+
+
+
+
+	<!--Chart section-->
+        <section class="content-header">
+          <h1>
+            图表
+            <small>病人数据统计</small>
+          </h1>
+        </section>
+	<section class="content" id='charts'>
+	   <div class="row">
+            <div class="col-md-6">
+              <!-- AREA CHART -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Experiment Count (Beta)</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body chart-responsive">
+                  <div class="chart" id="revenue-chart" style="height: 300px;"></div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              <!-- DONUT CHART -->
+              <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Experiment Finish Pattern (Beta)</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body chart-responsive">
+                  <div class="chart" id="sales-chart" style="height: 300px; position: relative;"></div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+		
+
+            </div><!-- /.col (LEFT) -->
+            <div class="col-md-6">
+              <!-- LINE CHART -->
+              <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Cumulative Experiment Count (Beta)</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body chart-responsive">
+                  <div class="chart" id="line-chart" style="height: 300px;"></div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              <!-- BAR CHART -->
+              <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Experiment Composition (Beta)</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="box-body chart-responsive">
+                  <div class="chart" id="bar-chart" style="height: 300px;"></div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
+            </div><!-- /.col (RIGHT) -->
+          </div><!-- /.row -->
+
+        </section><!-- /.content -->
+
       </div><!-- /.content-wrapper -->
 
 
@@ -762,93 +613,6 @@ div.dataTables_filter {
         <div class="tab-content">
           <!-- Home tab content -->
           <div class="tab-pane" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">Recent Activity</h3>
-            <ul class="control-sidebar-menu">
-              <li>
-                <a href="javascript::;">
-                  <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-                    <p>Will be 23 on April 24th</p>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript::;">
-                  <i class="menu-icon fa fa-user bg-yellow"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-                    <p>New phone +1(800)555-1234</p>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript::;">
-                  <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-                    <p>nora@example.com</p>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript::;">
-                  <i class="menu-icon fa fa-file-code-o bg-green"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-                    <p>Execution time 5 seconds</p>
-                  </div>
-                </a>
-              </li>
-            </ul><!-- /.control-sidebar-menu -->
-
-            <h3 class="control-sidebar-heading">Tasks Progress</h3>
-            <ul class="control-sidebar-menu">
-              <li>
-                <a href="javascript::;">
-                  <h4 class="control-sidebar-subheading">
-                    Custom Template Design
-                    <span class="label label-danger pull-right">70%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript::;">
-                  <h4 class="control-sidebar-subheading">
-                    Update Resume
-                    <span class="label label-success pull-right">95%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-success" style="width: 95%"></div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript::;">
-                  <h4 class="control-sidebar-subheading">
-                    Laravel Integration
-                    <span class="label label-warning pull-right">50%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="javascript::;">
-                  <h4 class="control-sidebar-subheading">
-                    Back End Framework
-                    <span class="label label-primary pull-right">68%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
-                  </div>
-                </a>
-              </li>
-            </ul><!-- /.control-sidebar-menu -->
 
           </div><!-- /.tab-pane -->
           <!-- Stats tab content -->
@@ -961,13 +725,15 @@ div.dataTables_filter {
     <!-- AdminLTE datatable -->
     <script src="{% static "AdminLTE/dist/js/pages/dashboard.js"%}" type="text/javascript"></script>
 
+    <script src="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.min.js" %}" type="text/javascript"></script>
 
 
 <script>
 
 $(document).ready(function() {
     $('#recent').dataTable( {
-        "pageLength": 20,
+        "scrollX": true,
+        "pageLength": 10,
         "order": [[ 2, "desc" ]],
         //"oSearch": {"sSearch": "{{g}}"},
         "aoSearchCols": [null,{ "sSearch": "{{p}}"},null,{ "sSearch": "{{u}}"},null,null],
@@ -989,6 +755,190 @@ $(document).ready(function() {
 } );
 </script>
 
+<script type="text/javascript">
+      $(function () {
+        "use strict";
 
+        // AREA CHART
+        var area = new Morris.Area({
+          element: 'revenue-chart',
+          resize: true,
+          data: [
+            {y: '2015 Q1', item1: 0, item2: 23},
+            {y: '2015 Q2', item1: 23, item2: 21},
+            {y: '2015 Q3', item1: 0, item2: 0},
+            {y: '2015 Q4', item1: 0, item2: 0},
+            {y: '2016 Q1', item1: 0, item2: 0},
+	    {y: '2016 Q2', item1: 0, item2: 0},
+            {y: '2016 Q3', item1: 0, item2: 0},
+            {y: '2016 Q4', item1: 0, item2: 0},
+            {y: '2017 Q1', item1: 0, item2: 0},
+            {y: '2017 Q2', item1: 0, item2: 0}
+          ],
+          xkey: 'y',
+          ykeys: ['item1', 'item2'],
+          labels: ['My Experiment', 'MMS Average'],
+          lineColors: ['#a0d0e0', '#3c8dbc'],
+          hideHover: 'auto'
+        });
+
+        // LINE CHART
+        var line = new Morris.Line({
+          element: 'line-chart',
+          resize: true,
+          data: [
+            {y: '2015-01', item1: 0},
+            {y: '2015-02', item1: 0},
+            {y: '2015-03', item1: 0},
+            {y: '2015-04', item1: 0},
+            {y: '2015-05', item1: 0},
+            {y: '2015-06', item1: 4},
+            {y: '2015-07', item1: 22},
+            {y: '2015-08', item1: 45},
+          ],
+          xkey: 'y',
+          ykeys: ['item1'],
+          labels: ['Item 1'],
+          lineColors: ['#3c8dbc'],
+          hideHover: 'auto'
+        });
+
+        //DONUT CHART
+        var donut = new Morris.Donut({
+          element: 'sales-chart',
+          resize: true,
+          colors: ["#3c8dbc", "#f56954", "#00a65a"],
+          data: [
+            {label: "On Time", value: 12},
+            {label: "Overdue", value: 30},
+            {label: "Finished Early", value: 20}
+          ],
+          hideHover: 'auto'
+        });
+        //BAR CHART
+        var bar = new Morris.Bar({
+          element: 'bar-chart',
+          resize: true,
+          data: [
+            {y: '201501', a: 100, b: 90},
+            {y: '201502', a: 75, b: 65},
+            {y: '201503', a: 50, b: 40},
+            {y: '201504', a: 75, b: 65},
+            {y: '201505', a: 50, b: 40},
+            {y: '201506', a: 75, b: 65},
+            {y: '201507', a: 100, b: 90},
+	    {y: '201508', a: 100, b: 90},
+	    {y: '201509', a: 100, b: 90}
+          ],
+          barColors: ['#00a65a', '#f56954'],
+          xkey: 'y',
+          ykeys: ['a', 'b'],
+          labels: ['Independent', 'Cooperation'],
+          hideHover: 'auto'
+        });
+      });
+    </script>
+
+
+    <script type="text/javascript">
+      $(function () {
+
+        /* initialize the external events
+         -----------------------------------------------------------------*/
+        function ini_events(ele) {
+          ele.each(function () {
+
+            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+            // it doesn't need to have a start or end
+            var eventObject = {
+              title: $.trim($(this).text()) // use the element's text as the event title
+            };
+
+            // store the Event Object in the DOM element so we can get to it later
+            $(this).data('eventObject', eventObject);
+
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+              zIndex: 1070,
+              revert: true, // will cause the event to go back to its
+              revertDuration: 0  //  original position after the drag
+            });
+
+          });
+        }
+        ini_events($('#external-events div.external-event'));
+
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+        //Date for the calendar events (dummy data)
+        var date = new Date();
+        var d = date.getDate(),
+                m = date.getMonth(),
+                y = date.getFullYear();
+        $('#calendar1').fullCalendar({
+          header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+          },
+          buttonText: {
+            today: 'today',
+            month: 'month',
+            week: 'week',
+            day: 'day'
+          },
+          //Random default events
+          events: {{calendar_data|safe}},
+          editable: true,
+          droppable: true, // this allows things to be dropped onto the calendar !!!
+          drop: function (date, allDay) { // this function is called when something is dropped
+
+            // retrieve the dropped element's stored Event Object
+            var originalEventObject = $(this).data('eventObject');
+
+            // we need to copy it, so that multiple events don't have a reference to the same object
+            var copiedEventObject = $.extend({}, originalEventObject);
+
+            // assign it the date that was reported
+            copiedEventObject.start = date;
+            copiedEventObject.allDay = allDay;
+            copiedEventObject.backgroundColor = $(this).css("background-color");
+            copiedEventObject.borderColor = $(this).css("border-color");
+
+            // render the event on the calendar
+            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+            $('#calendar1').fullCalendar('renderEvent', copiedEventObject, true);
+
+            // is the "remove after drop" checkbox checked?
+            if ($('#drop-remove').is(':checked')) {
+              // if so, remove the element from the "Draggable Events" list
+              $(this).remove();
+            }
+
+          }
+        });
+
+        /* ADDING EVENTS */
+        var currColor = "#3c8dbc"; //Red by default
+        //Color chooser button
+        var colorChooser = $("#color-chooser-btn");
+        $("#color-chooser > li > a").click(function (e) {
+          e.preventDefault();
+          //Save color
+          currColor = $(this).css("color");
+          //Add color effect to button
+          $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+        });
+        $("#add-new-event").click(function (e) {
+          e.preventDefault();
+          //Get value and make sure it is not null
+          var val = $("#new-event").val();
+          if (val.length == 0) {
+            return;
+          }
+
+        });
+      });
+    </script>
   </body>
 </html>

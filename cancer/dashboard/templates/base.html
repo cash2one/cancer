@@ -1,12 +1,11 @@
+<!DOCTYPE html>
 
 {% load staticfiles %}
-
-<!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Dashboard (Beta)</title>
+    <title>舶众 | 电子病历检索系统</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.4 -->
@@ -41,30 +40,51 @@
     <![endif]-->
     <link href="{% static "AdminLTE/plugins/datatables/dataTables.bootstrap.css" %}" rel="stylesheet" type="text/css" />
 
-{% block script%}{%endblock%}
+    <!-- jQuery 2.1.4 -->
+    <script src="{% static "AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js"%}" type="text/javascript"></script>    
+    <!-- jQuery UI 1.11.4 -->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
 
-<style>
-div.dataTables_filter {
-    text-align: left;
-}
-.col-sm-6 {
-    width: 20%;
-}
-</style>
 
+    <link href="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.min.css" %}" rel="stylesheet" type="text/css" />
+    <link href="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.print.css" %}" rel="stylesheet" type="text/css" media="print" />
+
+    <style>
+  div.dataTables_filter {
+      text-align: left;
+  }
+  .col-sm-6 {
+      width: 20%;
+  }
+    </style>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+    //Check if the current URL contains '#'
+    if(document.URL.indexOf("#")==-1){
+        // Set the URL to whatever it was plus "#".
+        url = document.URL+"#";
+        location = "#";
+
+        //Reload the page
+        location.reload(true);
+    }
+  });
+  </script>
+
+{%block script%} {%endblock%}
 
   </head>
-
-  <body class="skin-blue sidebar-mini">
+  <body class="skin-blue sidebar-mini wysihtml5-supported fixed">
     <div class="wrapper">
 
       <header class="main-header">
         <!-- Logo -->
         <a href="/" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>MMS</b></span>
+          <span class="logo-mini"><b>舶众</b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Pfizer</b>&nbsp;MMS</span>
+          <span class="logo-lg"><b>舶众</b>&nbsp;肿瘤数据平台</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -77,75 +97,6 @@ div.dataTables_filter {
               <!-- Messages: style can be found in dropdown.less-->
               <!-- Notifications: style can be found in dropdown.less -->
               <!-- Tasks: style can be found in dropdown.less -->
-              <li class="dropdown tasks-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">9</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 9 tasks</li>
-                  <li>
-                    <!-- inner menu: contains the actual data -->
-                    <ul class="menu">
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Design some buttons
-                            <small class="pull-right">20%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">20% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Create a nice theme
-                            <small class="pull-right">40%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">40% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Some task I need to do
-                            <small class="pull-right">60%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">60% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <h3>
-                            Make beautiful transitions
-                            <small class="pull-right">80%</small>
-                          </h3>
-                          <div class="progress xs">
-                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">80% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                    </ul>
-                  </li>
-                  <li class="footer">
-                    <a href="#">View all tasks</a>
-                  </li>
-                </ul>
-              </li>
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -155,21 +106,16 @@ div.dataTables_filter {
                   <!-- User image -->
                   <li class="user-header">
                     <p>
-                      <p>Hi, {{idms.FirstName}} {{idms.LastName}}</p>
-		      <small>NTID: {{user.username}}</small><br>
-                      <small>Email: {{idms.EmailAddress}}</small><br>
-		      <small>Organization: {{idms.Organization}}</small><br>
-		      <small>Approval Status: {{idms.get_approvalStatus_display}}</small>
-		    </p>
+                      <p>您好, {{idms.FirstName}} {{idms.LastName}}</p>
+                      <small>用户名: {{user.username}}</small><br>
+                      <small>邮箱: {{idms.EmailAddress}}</small><br>
+        </p>
                   </li>
                   <!-- Menu Body -->
                   <!-- Menu Footer-->
                   <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="/TODO/" class="btn btn-default btn-flat">Profile</a>
-                    </div>
                     <div class="pull-right">
-                      <a href="/accounts/logout/" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="/accounts/logout/" class="btn btn-default btn-flat">登出</a>
                     </div>
                   </li>
                 </ul>
@@ -187,79 +133,59 @@ div.dataTables_filter {
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
           <!-- Sidebar user panel -->
-          <!-- search form -->
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..." />
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
-          <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li class="header">MAIN NAVIGATION</li>
+            <li class="header">目录</li>
             <li class="active treeview">
               <a href="/">
-                <i class="fa fa-bank"></i> <span>Main</span> <i class="fa fa-angle-left pull-right"></i>
+                <i class="fa fa-bank"></i> <span>界面</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="/virtual/search/"><i class="fa fa-star-half-o"></i> Planned MiSeq</a></li>
-                <li><a href="/physical/search/"><i class="fa fa-star"></i> Finished MiSeq</a></li>
+                <li><a href="/"><i class="fa fa-home"></i> 主页</a></li>
+                <li><a href="/dashboard/"><i class="fa fa-home"></i> 控制台界面</a></li>
+                <li><a href="/mypatient/"><i class="fa fa-star"></i> 我的病人</a></li>
+                <li><a href="/admin/"><i class="fa fa-star"></i> 管理员界面</a></li>
               </ul>
             </li>
             <li class="active treeview">
-              <a href="/console/">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+              <a href="#">
+                <i class="fa fa-dashboard"></i> <span>数据库</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/virtual/new/"><i class="fa fa-flask"></i> Add Experiments</a></li>
-                <li><a href="/virtual/console/log/"><i class="fa fa-edit"></i> Logs</a></li>
-                <li><a href="/physical/search/"><i class="fa fa-cloud-download"></i> Timeline</a></li>
+                <li><a href="/dashboard/patient/"><i class="fa fa-edit"></i> 病人基本信息</a></li>
+                <li><a href="/dashboard/cancer/"><i class="fa fa-edit"></i> 肿瘤基本信息</a></li>
+                <li><a href="/dashboard/symptom/"><i class="fa fa-edit"></i> 症状与体征</a></li>
+                <li><a href="/dashboard/treatment/"><i class="fa fa-edit"></i> 治疗情况</a></li>
+                <li><a href="/dashboard/test/"><i class="fa fa-edit"></i> 辅助检查</a></li>
+                <li><a href="/dashboard/followup/"><i class="fa fa-edit"></i> 随访情况</a></li>
+                <li><a href="/dashboard/questionnaire/"><i class="fa fa-edit"></i> 问卷评分</a></li>
               </ul>
             </li>
-
-	     <li class="active treeview">
-              <a href="/console/account/">
-                <i class="fa fa-cog"></i> <span>Account Setting</span> <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="/TODO/"><i class="fa  fa-info-circle"></i> Information</a></li>
-                <li><a href="/TODO/"><i class="fa fa-bell-o"></i> Notification</a></li>
-                <li><a href="/TODO/"><i class="fa  fa-gears"></i> Setting</a></li>
-              </ul>
-            </li>
-
 
             <li class="treeview">
-              <a href="#">
+              <a href="#charts">
                 <i class="fa fa-pie-chart"></i>
-                <span>Charts</span>
-                <i class="fa fa-angle-left pull-right"></i>
+                <span>统计分析</span>
               </a>
-              <ul class="treeview-menu">
-                <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-                <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-                <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-              </ul>
             </li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-edit"></i> <span>Actions</span>
+                <i class="fa fa-edit"></i> <span>操作</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/virtual/new/"><i class="fa fa-circle-o"></i> Add New Experiment</a></li>
+                <li><a href="/virtual/new/"><i class="fa fa-circle-o"></i> 下载数据库</a></li>
               </ul>
             </li>
+            
+<!--
             <li>
-              <a href="pages/calendar.html">
+              <a href="#cal">
                 <i class="fa fa-calendar"></i> <span>Calendar</span>
-                <small class="label pull-right bg-red">3</small>
-              </a>
+    {% if due_in_2 > 0  %}
+    <small class="label pull-right bg-red">{{due_in_2}}</small>
+          {% endif %}
+        </a>
             </li>
             <li class="treeview">
               <a href="#">
@@ -274,29 +200,23 @@ div.dataTables_filter {
                 <li><a href="/virtual/treatments/"><i class="fa fa-circle-o"></i> Treatments</a></li>
               </ul>
             </li>
+-->
 
-
-	    <li class="treeview">
+      <li class="treeview">
               <a href="/TODO/">
-                <i class="fa fa-database"></i> <span>Documentation</span>
+                <i class="fa ion-medkit"></i> <span>教程</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
-	    <ul class="treeview-menu">
-              <li><a href="/TODO/"><i class="fa fa-circle-o text-red"></i> <span> About</span></a></li>
-              <li><a href="/TODO/"><i class="fa fa-circle-o text-yellow"></i> <span> User Manual</span></a></li>
-              <li><a href="/TODO/"><i class="fa fa-circle-o text-aqua"></i> <span> Developer Manual</span></a></li>
+      <ul class="treeview-menu">
+              <li><a href="/help/#about"><i class="fa fa-circle-o text-red"></i> <span> 有关本系统</span></a></li>
+              <li><a href="/TODO/"><i class="fa fa-circle-o text-yellow"></i> <span> 用户操作手册</span></a></li>
+              <li><a href="/TODO/"><i class="fa fa-circle-o text-aqua"></i> <span> 开发指南</span></a></li>
           </ul>
-	</li>
+  </li>
 
-        <li class="header">EXTERNAL LINKS</li>
-              <li><a href="http://idms.pfizer.com/"><i class="fa fa-circle-o text-red"></i> <span>IDMS</span></a></li>
-              <li><a href="http://lj-compbio.pfizer.com/"><i class="fa fa-circle-o text-yellow"></i> <span>Computational Biology</span></a></li>
-              <li><a href="http://idms.pfizer.com/funcgen/"><i class="fa fa-circle-o text-aqua"></i> <span>Functional Genomics Center</span></a></li>
-	      <li><a href="https://password.pfizer.com/"><i class="fa fa-circle-o text-aqua"></i> <span>Password On Demand</span></a></li>
-
-	<li class="header">USEFUL LINKS</li>
-              <li><a href="/help/"><i class="fa fa-question"></i> <span>Help</span></a></li>
-
+        <li class="header">其他</li>
+              <li><a href="http://idms.pfizer.com/"><i class="fa fa-circle-o text-red"></i> <span> 联系我们</span></a></li>
+              <li><a href="/TODO/"><i class="fa fa-circle-o text-yellow"></i> <span> 意见反馈</span></a></li>
 
         </section>
         <!-- /.sidebar -->
@@ -305,28 +225,105 @@ div.dataTables_filter {
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
-            Dashboard
-            <small>Control panel</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
-          </ol>
-        </section>
+        
+
+        <!-- Main content -->
+        <section class="content">
+          <!-- Small boxes (Stat box) -->
+
+ {%block content%}{%endblock%}
 
 
-       	{% block content %} {%endblock%}			
+      </div><!-- /.content-wrapper -->
 
 
-    </div><!-- .
-    /wrapper -->
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 2.2.0
+        </div>
+        <strong>Copyright &copy; 2015 ...</strong> All rights reserved.
+      </footer>
 
-    <!-- jQuery 2.1.4 -->
-    <script src="{% static "AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js"%}" type="text/javascript"></script>    
-    <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+          <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+          <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <!-- Home tab content -->
+          <div class="tab-pane" id="control-sidebar-home-tab">
+
+          </div><!-- /.tab-pane -->
+          <!-- Stats tab content -->
+          <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
+          <!-- Settings tab content -->
+          <div class="tab-pane" id="control-sidebar-settings-tab">
+            <form method="post">
+              <h3 class="control-sidebar-heading">General Settings</h3>
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Report panel usage
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+                <p>
+                  Some information about this general settings option
+                </p>
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Allow mail redirect
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+                <p>
+                  Other sets of options are available
+                </p>
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Expose author name in posts
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+                <p>
+                  Allow the user to show his name in blog posts
+                </p>
+              </div><!-- /.form-group -->
+
+              <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Show me as online
+                  <input type="checkbox" class="pull-right" checked />
+                </label>
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Turn off notifications
+                  <input type="checkbox" class="pull-right" />
+                </label>
+              </div><!-- /.form-group -->
+
+              <div class="form-group">
+                <label class="control-sidebar-subheading">
+                  Delete chat history
+                  <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                </label>
+              </div><!-- /.form-group -->
+            </form>
+          </div><!-- /.tab-pane -->
+        </div>
+      </aside><!-- /.control-sidebar -->
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script type="text/javascript">
       $.widget.bridge('uibutton', $.ui.button);
@@ -366,34 +363,7 @@ div.dataTables_filter {
     <!-- AdminLTE datatable -->
     <script src="{% static "AdminLTE/dist/js/pages/dashboard.js"%}" type="text/javascript"></script>
 
-
-
-<script>
-
-$(document).ready(function() {
-    $('#recent').dataTable( {
-        "pageLength": 20,
-        "order": [[ 2, "desc" ]],
-        //"oSearch": {"sSearch": "{{g}}"},
-        "aoSearchCols": [null,{ "sSearch": "{{p}}"},null,{ "sSearch": "{{u}}"},null,null],
-
-        "columnDefs": [
-            {
-                // The `data` parameter refers to the data for the cell (defined by the
-                // `data` option, which defaults to the column being worked with, in
-                // this case `data: 0`.
-                className: "dt-center",
-                "render": function ( data, type, row ) {
-                    return data;
-                },
-                "targets": "_all"//[0,1,2,3,4,5]
-            },
-            //{ "visible": false,  "targets": [ 4 ] }
-        ]
-    } );
-} );
-</script>
-
+    <script src="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.min.js" %}" type="text/javascript"></script>
 
   </body>
 </html>

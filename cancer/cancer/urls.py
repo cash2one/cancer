@@ -17,6 +17,17 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+	url(r'^$', 'cancer.views.login_view'),
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^dashboard/',include('dashboard.urls')),
+
+	#login logout
+	url(r'^accounts/login/$',  'cancer.views.login_view'),
+    url(r'^accounts/logout/$', 'cancer.views.logout_view'),
+    url(r'^accounts/loggedin/$', 'cancer.views.loggedin'),
+   	url(r'^accounts/register/$', 'cancer.views.register_user'),
+    url(r'^accounts/register_success/$', 'cancer.views.register_success'),
+	url(r'^accounts/logout_success/$', 'cancer.views.logout_success'),
+
+	url(r'^help/$',  'cancer.views.help'),	
 ]
