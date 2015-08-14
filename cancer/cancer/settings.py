@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'import_export',
+    'session_security',
     
     'dashboard',
 )
@@ -49,6 +50,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'session_security.middleware.SessionSecurityMiddleware',
 )
 
 ROOT_URLCONF = 'cancer.urls'
@@ -105,5 +108,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")  #should not use "/static/" with os.path.join here. http://stackoverflow.com/questions/1945920/os-path-join-python
 STATICFILES_DIRS = ('/Users/mahandong/Dropbox/entrepreneur/Boson/Projects/nfDjangoApp/static',)
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")

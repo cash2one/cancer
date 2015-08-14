@@ -67,6 +67,7 @@
   });
   </script>
 
+  {% include 'session_security/all.html' %}
 
   </head>
   <body class="skin-blue sidebar-mini wysihtml5-supported fixed">
@@ -161,15 +162,7 @@
                 <span>统计分析</span>
               </a>
             </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-edit"></i> <span>操作</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="/virtual/new/"><i class="fa fa-circle-o"></i> 下载数据库</a></li>
-              </ul>
-            </li>
+            
             
 <!--
             <li>
@@ -306,6 +299,7 @@
                 <div class="box-header">
                 </div><!-- /.box-header -->
                 <div class="box-body">
+{% if objs.count %}
 <table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
         <thead>
             <tr>
@@ -389,130 +383,17 @@
                 {% endfor %}
         </tbody>
     </table>
-
+{% else %}
+<div class="panel-body" style="width: 95%;margin-left:auto;margin-right:auto;">
+        <div class="well well-sm" style="margin-bottom: 2px;"><strong>数据库中找不到由您主治的病人！</div></strong>
+  </div>
+{% endif %}
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
-
-
-          <div class="row">
-            <!-- Left col -->
-            <section class="col-lg-7 connectedSortable">
-              <!-- TO DO List -->
-              <div class="box box-primary">
-                <div class="box-header">
-                  <i class="ion ion-clipboard"></i>
-                  <h3 class="box-title">Upcoming Experiments</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <ul class="todo-list">
-			{% autoescape off %}{{ todo }}{% endautoescape %} 
-                  </ul>
-                </div><!-- /.box-body -->
-		<!--
-                <div class="box-footer clearfix no-border">
-                  <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
-                </div>
-		-->
-              </div><!-- /.box -->
-
-
-		<!-- TABLE: LATEST ORDERS -->
-              <div class="box box-info">
-                <div class="box-header with-border">
-                 <i class="ion ion-android-cloud-done"></i> 
-		 <h3 class="box-title">Recently Finished Experiment</h3>
-                  <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <div class="table-responsive">
-                    <table class="table no-margin">
-                      <thead>
-                        <tr>
-                          <th>Project</th>
-                          <th>Title</th>
-                          <th>Comment</th>
-			  <th>Flag</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {% autoescape off %}{{ finished }}{% endautoescape %}
-		      </tbody>
-                    </table>
-                  </div><!-- /.table-responsive -->
-                </div><!-- /.box-body -->
-                <div class="box-footer clearfix">
-                  <a href="/TODO/" class="btn btn-sm btn-default btn-flat pull-right">View All</a>
-                </div><!-- /.box-footer -->
-              </div><!-- /.box -->
-
-
-		<!-- PRODUCT LIST -->
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                 <i class="ion ion-document-text"></i> 
-		 <h3 class="box-title">Recent Logs</h3>
-                  <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  <ul class="products-list product-list-in-box">
-                  {% for p in posts|slice:":5" %}
-		    <li class="item">
-                      <div class="product-info">
-                        <a href="/virtual/get/{{p.related_exp.experiment_id}}/" class="product-title">{{p.subject}}</a>
-                        <span class="product-description">
-                          {{p.content}}
-				<p >Posted by {% autoescape off %}{{p.created_by.get_taged_investigator_name}}{% endautoescape %} on {{p.created_date}}</p>
-                		{%if p.updated_by.NTID != None %}
-                		<p>Last Modified by {% autoescape off %}{{p.updated_by.get_taged_investigator_name}}{% endautoescape %} on {{p.updated_date}}</p>
-                		{%endif%}
-
-                        </span>
-                      </div>
-                    </li><!-- /.item -->
-		  {% endfor %}
-                  </ul>
-                </div><!-- /.box-body -->
-                <div class="box-footer text-center">
-                  <a href="/virtual/console/log/" class="uppercase">View All</a>
-                </div><!-- /.box-footer -->
-              </div><!-- /.box -->
-
-
-            </section><!-- /.Left col -->
-            <!-- right col (We are only adding the ID to make the widgets sortable)-->
-            <section class="col-lg-5 connectedSortable">
-
-
-              <!-- Calendar -->
-              <div id='cal' class="box box-solid bg-green-gradient">
-                <div class="box-header">
-                  <i class="fa fa-calendar"></i>
-                  <h3 class="box-title">Calendar</h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <!-- button with a dropdown -->
-                    <button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div><!-- /. tools -->
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <!--The calendar -->
-                  <div id="calendar1" style="width: 100%"></div>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
-
-
-            </section><!-- right col -->
-          </div><!-- /.row (main row) -->
+ 
 
         </section><!-- /.content -->
 
@@ -523,7 +404,7 @@
 	<!--Chart section-->
         <section class="content-header">
           <h1>
-            图表
+            图表（测试版）
             <small>病人数据统计</small>
           </h1>
         </section>
@@ -533,7 +414,7 @@
               <!-- AREA CHART -->
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Experiment Count (Beta)</h3>
+                  <h3 class="box-title">您的病人数量统计</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -546,7 +427,7 @@
               <!-- DONUT CHART -->
               <div class="box box-danger">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Experiment Finish Pattern (Beta)</h3>
+                  <h3 class="box-title">您的病人分类</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -563,7 +444,7 @@
               <!-- LINE CHART -->
               <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Cumulative Experiment Count (Beta)</h3>
+                  <h3 class="box-title">数据库条目增长趋势</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -576,7 +457,7 @@
               <!-- BAR CHART -->
               <div class="box box-success">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Experiment Composition (Beta)</h3>
+                  <h3 class="box-title">与您相关的术后并发症统计</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -777,7 +658,7 @@ $(document).ready(function() {
           ],
           xkey: 'y',
           ykeys: ['item1', 'item2'],
-          labels: ['My Experiment', 'MMS Average'],
+          labels: ['我的数据', '医生均值'],
           lineColors: ['#a0d0e0', '#3c8dbc'],
           hideHover: 'auto'
         });
@@ -798,7 +679,7 @@ $(document).ready(function() {
           ],
           xkey: 'y',
           ykeys: ['item1'],
-          labels: ['Item 1'],
+          labels: ['病人数目'],
           lineColors: ['#3c8dbc'],
           hideHover: 'auto'
         });
@@ -809,9 +690,9 @@ $(document).ready(function() {
           resize: true,
           colors: ["#3c8dbc", "#f56954", "#00a65a"],
           data: [
-            {label: "On Time", value: 12},
-            {label: "Overdue", value: 30},
-            {label: "Finished Early", value: 20}
+            {label: "死亡", value: 12},
+            {label: "随访中", value: 30},
+            {label: "住院", value: 20}
           ],
           hideHover: 'auto'
         });
@@ -833,7 +714,7 @@ $(document).ready(function() {
           barColors: ['#00a65a', '#f56954'],
           xkey: 'y',
           ykeys: ['a', 'b'],
-          labels: ['Independent', 'Cooperation'],
+          labels: ['伤口感染', '神经损害表现'],
           hideHover: 'auto'
         });
       });

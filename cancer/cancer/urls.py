@@ -29,5 +29,7 @@ urlpatterns = [
     url(r'^accounts/register_success/$', 'cancer.views.register_success'),
 	url(r'^accounts/logout_success/$', 'cancer.views.logout_success'),
 
+    url(r'session_security/', include('session_security.urls')),
+
 	url(r'^help/$',  'cancer.views.help'),	
 ]

@@ -49,7 +49,10 @@ def login_view(request):
 				return HttpResponseRedirect('/')
 	
 	else:
-		return render(request,'login.html')
+		if request.user.is_authenticated():
+			return HttpResponseRedirect('/dashboard/')	
+		else:
+			return render(request,'login.html')
 
 
 def loggedin(request):

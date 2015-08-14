@@ -209,6 +209,17 @@ TREATMENT_OTHER_TREATMENT_DRUG_CHOICES = (
 	(4, "靶向药物"),
 )
 
+#项目名称（1 手术病理， 2 穿刺病理， 3 PET-CT， 4 病变MR， 5 病变CT， 6 病变X线片 7 骨扫描）
+TEST_PROJECT_NAME_CHOICES = (
+	(1, "手术病理"),
+	(2, "穿刺病理"),
+	(3, "PET-CT"),
+	(4, "病变MR"),
+	(5, "病变CT"),
+	(6, "病变X线片"),
+	(7, "骨扫描"),
+)
+
 ################################################################################
 
 class Patient(models.Model):
@@ -353,8 +364,8 @@ class Symptom(models.Model):
 	DB_ID = models.CharField(max_length=200,blank=True) #, unique=True) TODO
 	name = models.CharField(max_length=200,blank=True, null=True)
 	EMR_id = models.CharField(max_length=200,blank=True,null=True)
+	
 	admission_date = models.CharField(max_length=200,blank=True, null=True) #models.DateField(blank=True,null=True) TODO
-
 	pain_VAS = models.CharField(max_length=2, null=True,blank=True,)
 	night_pain = models.IntegerField(choices=SYMPTOM_NIGHT_PAIN_CHOICES, null=True,blank=True,)
 	stay_in_bed = models.IntegerField(choices=SYMPTOM_STAY_IN_BED_CHOICES, null=True,blank=True,)
@@ -431,10 +442,26 @@ class Treatment(models.Model):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
 
 
+
 class Test(models.Model):
-	patient = models.ForeignKey(Patient, null=True,related_name='tests')
+	patient = models.CharField(max_length=200,blank=True) # models.ForeignKey(Patient, null=True,related_name='symptoms')
+	DB_ID = models.CharField(max_length=200,blank=True) #, unique=True) TODO
+	name = models.CharField(max_length=200,blank=True, null=True)
+	EMR_id = models.CharField(max_length=200,blank=True,null=True)
 
-
+	project_date = models.CharField(max_length=200,blank=True,null=True)#models.DateField(blank=True,null=True)
+	project_name = models.IntegerField(choices=TEST_PROJECT_NAME_CHOICES, null=True,blank=True,)
+	result_discription = models.CharField(max_length=200,blank=True,null=True)
+	diagosis = models.CharField(max_length=200,blank=True,null=True)
+	pre_test = models.IntegerField(choices=((1,"是"),(2,"否"),), null=True,blank=True,)
+	wbb_1_12 = models.CharField(max_length=200,blank=True,null=True)
+	wbb_A_F = models.CharField(max_length=200,blank=True,null=True)
+	CT_property = models.IntegerField(choices=((1,"溶骨"),(2,"成骨"),(3,"混合")), null=True,blank=True,)
+	X_ray = models.IntegerField(choices=((1,"正常"),(2,"半脱位/滑移"),(3,"侧凸/后凸")), null=True,blank=True,)
+	collapse = models.IntegerField(choices=((1,"<50%"),(2,">50%"),(3,"受累>50%但无塌陷"),(4,"无")), null=True,blank=True,)
+	lateral_involvement = models.IntegerField(choices=((1,"是"),(2,"否"),(3,"不涉及")), null=True,blank=True,)
+	vertebral_artery_involvement = models.CharField(max_length=200,blank=True,null=True)
+	enneking = models.CharField(max_length=200,blank=True,null=True)
 
 	#DEFAULT FIELDS
 	tagged = models.NullBooleanField(blank=True,null=True)
@@ -451,7 +478,10 @@ class Test(models.Model):
 
 
 class FollowUp(models.Model):
-	patient = models.ForeignKey(Patient, null=True,related_name='followups')
+	patient = models.CharField(max_length=200,blank=True) # models.ForeignKey(Patient, null=True,related_name='symptoms')
+	DB_ID = models.CharField(max_length=200,blank=True) #, unique=True) TODO
+	name = models.CharField(max_length=200,blank=True, null=True)
+	EMR_id = models.CharField(max_length=200,blank=True,null=True)
 
 	major_complain = models.CharField(max_length=200,blank=True,null=True)
 	recurrence = models.IntegerField(choices=((1,"有"),(2,"无"),), null=True,blank=True,)
@@ -478,7 +508,11 @@ class FollowUp(models.Model):
 
 
 class Questionnaire(models.Model):
-	patient = models.ForeignKey(Patient, null=True,related_name='questionnaires')
+	patient = models.CharField(max_length=200,blank=True) # models.ForeignKey(Patient, null=True,related_name='symptoms')
+	DB_ID = models.CharField(max_length=200,blank=True) #, unique=True) TODO
+	name = models.CharField(max_length=200,blank=True, null=True)
+	EMR_id = models.CharField(max_length=200,blank=True,null=True)
+
 	EQ5D_1 = models.IntegerField(null=True,blank=True)
 	EQ5D_2 = models.IntegerField(null=True,blank=True)
 	EQ5D_3 = models.IntegerField(null=True,blank=True)

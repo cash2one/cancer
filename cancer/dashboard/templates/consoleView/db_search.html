@@ -44,9 +44,9 @@
           <h1>
             {{db_name_ch}} 数据库
             <small>输入以搜索</small>
+            <small><a href='/media/DB/{{db_name_ch}}.xls' ><i class="ion ion-ios-cloud-download-outline" style='margin-left:20px;' alt='click to download'>&nbsp;下载数据库</i></a></small>
           </h1>
         </section>
-
         <!-- Main content -->
         <section class="content">
           <div class="row">
@@ -165,10 +165,27 @@
                 {% endif %}
 
                 {% if db_name == "followup" %}
+                    <th>主诉</th>
+                    <th>复发</th>
+                    <th>转移</th>
+                    <th>内固定松动</th>
+                    <th>内固定断裂</th>
+                    <th>CT融合</th>
+                    <th>随访方式</th>
+                    <th>死亡日期</th>
+                    <th>随访日期</th>
+                    <th>备注</th>
+
                 {% endif %}
 
 
                 {% if db_name == "questionnaire" %}
+                    <th>EQ5D-1</th>
+                    <th>EQ5D-2</th>
+                    <th>EQ5D-3</th>
+                    <th>EQ5D-4</th>
+                    <th>EQ5D-5</th>
+                    <th>问卷日期</th>
                 {% endif %}
                 <!--
                 
@@ -268,15 +285,44 @@
 
 
                             {% if db_name == "test" %}
+                                <td>{{obj.project_date}}</td>
+                                <td>{{obj.project_name}}</td>
+                                <td>{{obj.result_discription}}</td>
+                                <td>{{obj.diagosis}}</td>
+                                <td>{{obj.get_pre_test_display}}</td>
+                                <td>{{obj.wbb_1_12}}</td>
+                                <td>{{obj.wbb_A_F}}</td>
+                                <td>{{obj.get_CT_property_display}}</td>
+                                <td>{{obj.get_X_ray_display}}</td>
+                                <td>{{obj.get_collapse_display}}</td>
+                                <td>{{obj.get_lateral_involvement_display}}</td>
+                                <td>{{obj.vertebral_artery_involvement}}</td>
+                                <td>{{obj.enneking}}</td>
+                                <td>{{obj.comment}}</td>
                             {% endif %}
 
                             {% if db_name == "followup" %}
+                                <td>{{obj.major_complain}}</td>
+                                <td>{{obj.get_recurrence_display}}</td>
+                                <td>{{obj.get_transfer_display}}</td>
+                                <td>{{obj.get_fixation_loose_display}}</td>
+                                <td>{{obj.get_fixation_break_display}}</td>
+                                <td>{{obj.get_CT_fusion_display}}</td>
+                                <td>{{obj.get_method_display}}</td>
+                                <td>{{obj.DOD}}</td>
+                                <td>{{obj.followup_date}}</td>
+                                <td>{{obj.comment}}</td>
+                                
                             {% endif %}
-
 
                             {% if db_name == "questionnaire" %}
+                                <td>{{obj.EQ5D_1}}</td>
+                                <td>{{obj.EQ5D_2}}</td>
+                                <td>{{obj.EQ5D_3}}</td>
+                                <td>{{obj.EQ5D_4}}</td>
+                                <td>{{obj.EQ5D_5}}</td>
+                                <td>{{obj.date}}</td>
                             {% endif %}
-
 
                         </tr>
 
