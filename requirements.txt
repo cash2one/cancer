@@ -8,6 +8,7 @@ cement==2.4.0
 colorama==0.3.3
 diff-match-patch==20121119
 django-import-export==0.2.8
+django-session-security==2.2.4
 docker-py==1.1.0
 dockerpty==0.3.4
 docopt==0.6.2
