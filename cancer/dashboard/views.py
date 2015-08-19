@@ -54,6 +54,25 @@ def db_search(request,db_name):
 	return render_to_response('consoleView/db_search.html',args)
 
 
+def general_search(request,db_name):
+	#get patient list, privacy should be considered
+	objs =  Patient.objects.all().order_by('DB_ID')#Patient.objects.filter(created_by__NTID__iexact=request.user.username).order_by('-created_date')
+
+	#other related table fields
+	cancer = Cancer.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+	symptom = Symptom.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+	treatement = Treatment.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+	test = Test.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+	followup = FollowUp.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+	questionnaire = Questionnaire.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+
+	args = {}
+	args.update(csrf(request))
+	args['user'] = request.user
+	args['objs'] = objs
+
+	return render_to_response('consoleView/general_search.html',args)
+
 ######################registered template filters##########################
 @register.filter
 def get_item(dictionary, key):
