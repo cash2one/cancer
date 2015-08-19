@@ -18,13 +18,31 @@
 
 <script>
 
+
 $(document).ready(function() {
+    
+    //hide empty columns
+    $('#recent tr th').each(function(i) {
+     //select all tds in this column
+     var tds = $(this).parents('table')
+              .find('tr td:nth-child(' + (i + 1) + ')');
+        //check if all the cells in this column are empty
+        if(tds.length == tds.filter(':empty').length) { 
+            //hide header
+            $(this).hide();
+            //hide cells
+            tds.hide();
+        } 
+    }); 
+
     $('#recent').dataTable( {
         "scrollX": true,
+        "scrollY": 400,
         "pageLength": 10,
         "order": [[ 2, "desc" ]],
         //"oSearch": {"sSearch": "{{g}}"},
         "aoSearchCols": [null,{ "sSearch": "{{p}}"},null,{ "sSearch": "{{u}}"},null,null],
+
 
         "columnDefs": [
             {
@@ -37,7 +55,9 @@ $(document).ready(function() {
                 },
                 "targets": "_all"//[0,1,2,3,4,5]
             },
+            { sWidth: "16%", aTargets: [  1, 2,3,4,5,6 ] },
             //{ "visible": false,  "targets": [ 4 ] }
+            
         ]
     } );
 } );
@@ -154,7 +174,7 @@ $(document).ready(function() {
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>返回</h3>
+                  <h5>返回</h5>
                   <p>回控制台页面</p>
                 </div>
                 <div class="icon">
@@ -167,7 +187,7 @@ $(document).ready(function() {
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>我的病人</h3>
+                  <h4>我的病人</h4>
                   <p>查看我的病人信息</p>
                 </div>
                 <div class="icon">
@@ -224,7 +244,7 @@ $(document).ready(function() {
                 </div><!-- /.box-header -->
                 <div class="box-body">
 {% if objs.count %}
-<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
+<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>数据库编号</th>
@@ -235,10 +255,12 @@ $(document).ready(function() {
                 <th>手术入路</th>
                 <th>手术部位</th>
                 <th>手术方式</th>
+                
                 <th>肿瘤包膜破损情况</th>
                 <th>为保证边界牺牲的组织</th>
                 <th>术中骨水泥强化</th>
                 <th>术中射频消融</th>
+                
                 <th>手术总时间（min）</th>
                 <th>出血量（ml）</th>
                 <th>异体血（ml）</th>
