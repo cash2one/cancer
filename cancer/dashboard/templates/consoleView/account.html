@@ -36,6 +36,9 @@ $(document).ready(function() {
     }); 
 
     $('#recent').dataTable( {
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
+        },
         "scrollX": "10%",
         "scrollY": 400,
         "pageLength": 10,
@@ -56,7 +59,6 @@ $(document).ready(function() {
                 },
                 "targets": "_all"//[0,1,2,3,4,5]
             },
-            { sWidth: "16%", aTargets: [  1, 2,3,4,5,6 ] },
             //{ "visible": false,  "targets": [ 4 ] }
             
         ]
@@ -70,7 +72,7 @@ $(document).ready(function() {
 
         // AREA CHART
         var area = new Morris.Area({
-          element: 'revenue-chart',
+          element: 'patient-number-chart',
           resize: true,
           data: [
             {y: '2015 Q1', item1: 0, item2: 23},
@@ -78,7 +80,7 @@ $(document).ready(function() {
             {y: '2015 Q3', item1: 0, item2: 0},
             {y: '2015 Q4', item1: 0, item2: 0},
             {y: '2016 Q1', item1: 0, item2: 0},
-      {y: '2016 Q2', item1: 0, item2: 0},
+            {y: '2016 Q2', item1: 0, item2: 0},
             {y: '2016 Q3', item1: 0, item2: 0},
             {y: '2016 Q4', item1: 0, item2: 0},
             {y: '2017 Q1', item1: 0, item2: 0},
@@ -114,7 +116,7 @@ $(document).ready(function() {
 
         //DONUT CHART
         var donut = new Morris.Donut({
-          element: 'sales-chart',
+          element: 'status-chart',
           resize: true,
           colors: ["#3c8dbc", "#f56954", "#00a65a"],
           data: [
@@ -368,7 +370,7 @@ $(document).ready(function() {
                   </div>
                 </div>
                 <div class="box-body chart-responsive">
-                  <div class="chart" id="revenue-chart" style="height: 300px;"></div>
+                  <div class="chart" id="patient-number-chart" style="height: 300px;"></div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
               <!-- DONUT CHART -->
@@ -381,7 +383,7 @@ $(document).ready(function() {
                   </div>
                 </div>
                 <div class="box-body chart-responsive">
-                  <div class="chart" id="sales-chart" style="height: 300px; position: relative;"></div>
+                  <div class="chart" id="status-chart" style="height: 300px; position: relative;"></div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
 		
