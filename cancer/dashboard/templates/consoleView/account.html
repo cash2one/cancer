@@ -36,9 +36,10 @@ $(document).ready(function() {
     }); 
 
     $('#recent').dataTable( {
-        "scrollX": true,
+        "scrollX": "10%",
         "scrollY": 400,
         "pageLength": 10,
+        "bAutoWidth": true,
         "order": [[ 2, "desc" ]],
         //"oSearch": {"sSearch": "{{g}}"},
         "aoSearchCols": [null,{ "sSearch": "{{p}}"},null,{ "sSearch": "{{u}}"},null,null],
