@@ -12,7 +12,7 @@ from .models import Patient, Cancer, Symptom, Treatment, Test, FollowUp, Questio
 
 @login_required
 def index(request):
-	objs = Treatment.objects.filter(surgeon__iexact=request.user.username).order_by('DB_ID')
+	objs = Treatment.objects.filter(surgeon__iexact=u'刘忠军')#request.user.username).order_by('DB_ID')
 	args = {}
 	args.update(csrf(request))
 	args['user'] = request.user
