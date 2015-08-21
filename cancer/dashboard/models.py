@@ -252,6 +252,11 @@ class Patient(models.Model):
 
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
+
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
+
 '''
 	def natural_key(self):
 			return (self.name,self.db_id)
@@ -335,6 +340,10 @@ class Cancer(models.Model):
 
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
+	
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
 
 '''
 	@property
@@ -390,6 +399,10 @@ class Symptom(models.Model):
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
 
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
+
 
 
 class Treatment(models.Model):
@@ -440,6 +453,9 @@ class Treatment(models.Model):
 
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
 
 
 
@@ -476,6 +492,11 @@ class Test(models.Model):
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
 
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
+
+
 
 class FollowUp(models.Model):
 	patient = models.CharField(max_length=200,blank=True) # models.ForeignKey(Patient, null=True,related_name='symptoms')
@@ -506,6 +527,11 @@ class FollowUp(models.Model):
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
 
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
+
+
 
 class Questionnaire(models.Model):
 	patient = models.CharField(max_length=200,blank=True) # models.ForeignKey(Patient, null=True,related_name='symptoms')
@@ -533,3 +559,8 @@ class Questionnaire(models.Model):
 
 	def __unicode__(self):
 		return smart_unicode('-'.join([self.DB_ID,str(self.id)]))
+
+	@property	
+	def get_absolute_url(self):
+		return "/dashboard/get/%s/" % self.DB_ID
+

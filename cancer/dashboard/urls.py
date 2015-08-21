@@ -12,5 +12,7 @@ from django.conf import settings
 
 urlpatterns = [
     	url(r'^$', views.index, name='index'),
-    	url(r'^(?P<db_name>\w+)/$', views.db_search, name='db_search'),
+    	url(r'^db/(?P<db_name>\w+)/$', views.db_search, name='db_search'),
+    	url(r'^search/$', views.general_search, name='general_search'),
+    	url(r'^get/(?P<DB_ID>\w+)/$', views.detail, name='detail'),
 ]

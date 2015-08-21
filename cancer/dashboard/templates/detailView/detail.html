@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+{% extends "base.html" %}
+{% load staticfiles %}
+{%block script%}
+<script src="{% static "js/jquery.dataTables.js" %}"></script>
+<link rel="stylesheet" href="{% static "css/jquery.dataTables.css" %}" />
+
+<script>
+$(document).ready(function() {
+	$('#sample').dataTable( {
+        "pageLength": 20,
+	      "columnDefs": [
+            {
+                // The `data` parameter refers to the data for the cell (defined by the
+                // `data` option, which defaults to the column being worked with, in
+                // this case `data: 0`.
+                "render": function ( data, type, row ) {
+                    return data;
+                },
+                "targets": 0
+            },
+            //{ "visible": false,  "targets": [ 4 ] }
+        ]
+    } );
+} );
+</script>
+
+<script>
+function popupwindow(url, title, w, h) {
+  var left = (screen.width/2)-(w/2);
+  var top = (screen.height/2)-(h/2);
+  return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+}
+</script>
+
+
+{%endblock%}
+{% block content %}
+<ul class="breadcrumb">
+   <li><a href="/">主页</a></li>
+   <li><a href="/dashboard/">控制台</a></li>
+   <li class="active">病人详细信息</li>
+</ul>
+
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#home" data-toggle="tab" >病人基本信息</a></li>
+  <li class=""><a href="#cancer" data-toggle="tab" >肿瘤基本信息</a></li>
+  <li ><a href="#symptom" data-toggle="tab" >症状与体征</a></li>
+  <li ><a href="#treatment" data-toggle="tab" >治疗情况</a></li>
+  <li ><a href="#test" data-toggle="tab" >辅助检查</a></li>
+  <li ><a href="#followup" data-toggle="tab" >随访情况</a></li>
+  <li ><a href="#questionnaire" data-toggle="tab" >问卷评分</a></li>
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+      其他操作 <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="#" target="_blank" data-toggle="tab">下载病人信息</a></li>
+      <li class="divider"></li>
+      <li><a href="#" target="_blank" data-toggle="tab">修改病人信息</a></li>
+      <li class="divider"></li>
+      <li><a href="#" target="_blank" data-toggle="tab">添加日志</a></li>
+    </ul>
+  </li>
+
+</li>
+</ul>
+
+
+
+<div id="myTabContent" class="tab-content">
+
+  <div class="tab-pane fade active in" id="home">
+
+   <div class="panel panel-success" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+    <div class="panel-heading" >
+      <h3>病人基本信息</h3>
+    </div>
+  </div>
+
+ </div> <!--tab 1-->
+ 
+
+ <div class="tab-pane fade" id="cancer">
+<!-- Post Section -->
+
+	<div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+	  <div class="panel-heading" >
+	    <h3>肿瘤基本信息</h3>
+	  </div>
+	</div>
+
+
+ </div>  <!--tab 2-->
+
+
+  <div class="tab-pane fade" id="symptom">
+    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+      <div class="panel-heading" >
+        <h3>症状与体征</h3>
+      </div>
+    </div>
+        
+
+  </div> <!--tab 3-->
+
+  <div class="tab-pane fade" id="treatment">
+    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+      <div class="panel-heading" >
+        <h3>治疗情况</h3>
+      </div>
+    </div>
+        
+
+  </div> <!--tab 4-->
+
+  <div class="tab-pane fade" id="test">
+    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+      <div class="panel-heading" >
+        <h3>辅助检查</h3>
+      </div>
+    </div>
+        
+
+  </div> <!--tab 5-->
+
+  <div class="tab-pane fade" id="followup">
+    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+      <div class="panel-heading" >
+        <h3>随访情况</h3>
+      </div>
+    </div>
+        
+
+  </div> <!--tab 6-->
+
+  <div class="tab-pane fade" id="questionnaire">
+    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+      <div class="panel-heading" >
+        <h3>问卷评分</h3>
+      </div>
+    </div>
+        
+
+  </div> <!--tab 7-->
+
+</div>
+
+{% endblock %}
+
