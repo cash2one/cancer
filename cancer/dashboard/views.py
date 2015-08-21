@@ -66,10 +66,10 @@ def general_search(request):
 		cancer = Cancer.objects.filter(DB_ID__iexact=patient.DB_ID).order_by('DB_ID')
 		for field in cancer._meta.get_all_field_names():
 			if getattr(cancer,field.name)):
-				try:
-					str_value = str(getattr(cancer,field.name))
-					cancer_cell.append(str_value)
-				
+				#try:
+					#str_value = str(getattr(cancer,field.name))
+					#cancer_cell.append(str_value)
+				pass
 		#symptom = Symptom.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
 		#treatement = Treatment.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
 		#test = Test.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
