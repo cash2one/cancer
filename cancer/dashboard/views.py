@@ -60,21 +60,6 @@ def general_search(request):
 	patients =  Patient.objects.all().order_by('DB_ID')#Patient.objects.filter(created_by__NTID__iexact=request.user.username).order_by('-created_date')
 
 	#other related table fields
-	fields = list()
-	for patient in patients:
-		cancer_cell = []
-		cancer = Cancer.objects.filter(DB_ID__iexact=patient.DB_ID).order_by('DB_ID')
-		#for field in cancer._meta.get_all_field_names():
-		#	if getattr(cancer,field.name)):
-				#try:
-					#str_value = str(getattr(cancer,field.name))
-					#cancer_cell.append(str_value)
-		#		pass
-		#symptom = Symptom.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-		#treatement = Treatment.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-		#test = Test.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-		#followup = FollowUp.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-		#questionnaire = Questionnaire.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
 
 	args = {}
 	args.update(csrf(request))
