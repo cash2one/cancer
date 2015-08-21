@@ -5,33 +5,65 @@
 <script src="{% static "js/jquery.dataTables.js" %}"></script>
 <link rel="stylesheet" href="{% static "css/jquery.dataTables.css" %}" />
 
+
+<style>
+  div.dataTables_filter {
+      text-align: left;
+  }
+  .col-sm-6 {
+      width: 20%;
+  }
+  .filterMatches { background-color: #FFFF00; }
+
+  </style>
+
+
 <script>
+
 $(document).ready(function() {
-	$('#sample').dataTable( {
-        "pageLength": 20,
-	      "columnDefs": [
-            {
-                // The `data` parameter refers to the data for the cell (defined by the
-                // `data` option, which defaults to the column being worked with, in
-                // this case `data: 0`.
-                "render": function ( data, type, row ) {
-                    return data;
-                },
-                "targets": 0
-            },
-            //{ "visible": false,  "targets": [ 4 ] }
-        ]
-    } );
+
+    //hide empty columns
+    $('#recent tr th').each(function(i) {
+     //select all tds in this column
+     var tds = $(this).parents('table')
+              .find('tr td:nth-child(' + (i + 1) + ')');
+        //check if all the cells in this column are empty
+        if(tds.length == tds.filter(':empty').length) { 
+            //hide header
+            $(this).hide();
+            //hide cells
+            tds.hide();
+        } 
+    }); 
+
+
+     var table = $('#recent').dataTable( {
+        //highlight search text, CHECK
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            var settings = this.fnSettings();
+            var str = settings.oPreviousSearch.sSearch;
+            var regex = new RegExp( str, 'i');
+            $('td', nRow).each( function(i) {
+                this.innerHTML = aData[i].replace( regex, function(matched) { return "<span class='filterMatches'>"+matched+"</span>";});
+            });
+            return nRow;
+        },
+
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
+        },
+        "scrollX": true,
+        "scrollY": 800,
+        "pageLength": 10,
+        "bAutoWidth": true,
+        'searchHighlight': true,
+        "order": [[ 2, "desc" ]],
+
+    } );//table
 } );
 </script>
 
-<script>
-function popupwindow(url, title, w, h) {
-  var left = (screen.width/2)-(w/2);
-  var top = (screen.height/2)-(h/2);
-  return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
-}
-</script>
+
 
 
 {%endblock%}
@@ -79,6 +111,49 @@ function popupwindow(url, title, w, h) {
     </div>
   </div>
 
+<!--
+<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
+  <thead>
+      <tr>
+          <th>数据库编号</th>
+          <th>姓名</th>
+          <th>病历号</th>
+          <th>性别</th>
+          <th>出生年月</th>
+          <th>身份证号</th>
+          <th>地区</th>
+          <th>随访电话</th>
+          <th>去世日期</th>
+          <th>关系</th>
+          <th>电话</th>
+          <th>Email</th>
+          <th>微信</th>
+          <th>在随访中</th>
+      </tr>
+  </thead>
+
+  <tbody>
+  <tr>
+      <td><a href="{{patient.get_absolute_url}}">{{patient.DB_ID}}</a></td>
+      <td>{{patient.name}}</td>
+      <td>{{patient.EMR_id}}</td>
+      <td>{{patient.sex}}</td>
+      <td>{{patient.DOB}}</td>
+      <td>{{patient.social_id}}</td>
+      <td>{{patient.location}}</td>
+      <td>{{patient.phone}}</td>
+      <td>{{patient.DOD}}</td>
+      <td>{{patient.get_relative_display}}</td>
+      <td>{{patient.relative_phone}}</td>
+      <td>{{patient.relative_email}}</td>
+      <td>{{patient.relative_wechat}}</td>
+      <td>{{patient.get_relative_in_contact_display}}</td>
+
+  </tr>
+  </tbody>
+</table>
+-->
+
  </div> <!--tab 1-->
  
 
@@ -90,6 +165,57 @@ function popupwindow(url, title, w, h) {
 	    <h3>肿瘤基本信息</h3>
 	  </div>
 	</div>
+
+
+<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
+  <thead>
+    <tr>
+      <th>数据库编号</th>
+      <th>姓名</th>
+      <th>病历号</th>
+      <th>入院日期</th>
+      <th>出院日期</th>
+      <th>住院科室</th>
+      <th>术前诊断</th>
+      <th>最终诊断</th>
+      <th>诊断依据</th>
+      <th>肿瘤性质</th>
+      <th>肿瘤分类</th>
+      <th>肿瘤复发</th>
+      <th>脊柱病灶数目</th>
+      <th>肿瘤部位</th>
+      <th>脊柱外骨累及</th>
+      <th>原发灶外重要脏器累及</th>
+      <th>重要脏器累及可控制</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for cancer in cancers %}
+  <tr>
+      <td><a href="{{cancer.get_absolute_url}}">{{cancer.DB_ID}}</a></td>
+      <td>{{cancer.name}}</td>
+      <td>{{cancer.EMR_id}}</td>
+      <td>{{cancer.admission_date}}</td>
+      <td>{{cancer.discharge_date}}</td>
+      <td>{{cancer.get_department_display}}</td>
+      <td>{{cancer.pre_diagnosis}}</td>
+      <td>{{cancer.diagnosis}}</td>
+      <td>{{cancer.get_diagnosis_basis_display}}</td>
+      <td>{{cancer.get_cancer_property_display}}</td>
+      <td>{{cancer.get_cancer_type_display}}</td>
+      <td>{{cancer.get_recurrence_display}}</td>
+      <td>{{cancer.get_focus_display}}</td>
+      <td>{{cancer.get_location_display}}</td>
+      <td>{{cancer.get_infection_spinal_display}}</td>
+      <td>{{cancer.get_infection_organ_display}}</td>
+      <td>{{cancer.get_infection_organ_controllable_display}}</td>
+      <td>{{cancer.comment}}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
 
 
  </div>  <!--tab 2-->

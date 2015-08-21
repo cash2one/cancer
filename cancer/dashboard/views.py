@@ -60,12 +60,15 @@ def general_search(request):
 	patients =  Patient.objects.all().order_by('DB_ID')#Patient.objects.filter(created_by__NTID__iexact=request.user.username).order_by('-created_date')
 
 	#other related table fields
-	#cancer = Cancer.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-	#symptom = Symptom.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-	#treatement = Treatment.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-	#test = Test.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-	#followup = FollowUp.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
-	#questionnaire = Questionnaire.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+	fields = list()
+	for patient in patients:
+		cancer = Cancer.objects.filter(DB_ID__iexact=patient.DB_ID).order_by('DB_ID')
+		
+		#symptom = Symptom.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#treatement = Treatment.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#test = Test.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#followup = FollowUp.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#questionnaire = Questionnaire.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
 
 	args = {}
 	args.update(csrf(request))
@@ -84,10 +87,25 @@ def detail(request, DB_ID):
 	if DB_ID:
 		patient = get_object_or_404(Patient, DB_ID=DB_ID)
 
+		#other related table fields
+		cancers = Cancer.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		symptoms = Symptom.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		treatements = Treatment.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		tests = Test.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		followups = FollowUp.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		questionnaires = Questionnaire.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+
 		args = {}
 		args.update(csrf(request))
 		args['user'] = request.user
 		args['patient'] = patient
+		args['cancers'] = cancers
+		args['symptoms'] = symptoms
+		args['tests'] = tests
+		args['followups'] = followups
+		args['questionnaires'] = questionnaires
+
+		args['user'] = request.user
 		
 		return render(request, 'detailView/detail.html', args)
 	else:
