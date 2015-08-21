@@ -79,24 +79,22 @@ def detail(request, DB_ID):
 		patient = get_object_or_404(Patient, DB_ID=DB_ID)
 
 		#other related table fields
-		cancers = Cancer.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		symptoms = Symptom.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		treatements = Treatment.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		tests = Test.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		followups = FollowUp.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		questionnaires = Questionnaire.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		#cancers = Cancer.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		#symptoms = Symptom.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		#treatements = Treatment.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		#tests = Test.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		#followups = FollowUp.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		#questionnaires = Questionnaire.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
 
 		args = {}
 		args.update(csrf(request))
 		args['user'] = request.user
 		args['patient'] = patient
-		args['cancers'] = cancers
-		args['symptoms'] = symptoms
-		args['tests'] = tests
-		args['followups'] = followups
-		args['questionnaires'] = questionnaires
-
-		args['user'] = request.user
+		#args['cancers'] = cancers
+		#args['symptoms'] = symptoms
+		#args['tests'] = tests
+		#args['followups'] = followups
+		#args['questionnaires'] = questionnaires
 		
 		return render(request, 'detailView/detail.html', args)
 	else:
