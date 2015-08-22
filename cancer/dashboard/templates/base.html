@@ -300,6 +300,10 @@
     </div><!-- ./wrapper -->
 
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+    {%block endscript%} {%endblock%}
+
+
     <script type="text/javascript">
       $.widget.bridge('uibutton', $.ui.button);
     </script>
@@ -339,6 +343,7 @@
     <script src="{% static "AdminLTE/dist/js/pages/dashboard.js"%}" type="text/javascript"></script>
 
     <script src="{% static "AdminLTE/plugins/fullcalendar/fullcalendar.min.js" %}" type="text/javascript"></script>
+
 
   </body>
 </html>

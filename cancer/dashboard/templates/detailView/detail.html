@@ -5,6 +5,12 @@
 <script src="{% static "js/jquery.dataTables.js" %}"></script>
 <link rel="stylesheet" href="{% static "css/jquery.dataTables.css" %}" />
 
+<link rel="stylesheet" href="{% static "timeline/css/timeline-reset.css"%}"/> <!-- CSS reset -->
+<link rel="stylesheet" href="{% static "timeline/css/timeline-style.css"%}"/> <!-- Resource style -->
+
+<script src="{% static "timeline/js/timeline-modernizr.js" %}"></script> <!-- Modernizr -->
+<script src="{% static "timeline/js/timeline-main.js" %}"></script> <!-- Resource jQuery -->
+
 
 <style>
   div.dataTables_filter {
@@ -110,6 +116,33 @@ $(document).ready(function() {
       <h3>病人基本信息</h3>
     </div>
   </div>
+
+
+
+
+    <div class="box-container" style='width:80%'>
+    <div class="content">
+      <header style=" margin-top: 0px; margin-bottom: 50px; padding-bottom: 0px; height: 100px; padding-top: 0px; ">
+      <div style="text-align: center;">
+      <h1 style="text-align: center; vertical-align: middle;display: inline-block;"> 病人时间轴</h1>      
+      </div>
+      </header>
+    <section id="cd-timeline" class="cd-container">
+      {% for cancer in cancers %}
+      <div class="cd-timeline-block">
+        <div class="cd-timeline-img cd-movie">
+        </div> <!-- cd-timeline-img -->
+        <div class="cd-timeline-content">
+          <p>肿瘤基本信息: {{cancer.project_name}}</p>
+          <h2>诊断: {{cancer.diagnosis}}</h2>
+          <a href="{{experiment.get_absolute_url}}" class="cd-read-more">详细信息</a>
+          <span class="cd-date">TODO</span>
+        </div> <!-- cd-timeline-content -->
+      </div> <!-- cd-timeline-block -->
+      {% endfor %}
+    </section> <!-- cd-timeline -->
+    </div>
+    </div>
 
 <!--
 <table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
