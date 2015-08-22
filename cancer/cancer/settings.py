@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for cancer project.
 
@@ -90,6 +92,10 @@ DATABASES = {
     }
 }
 
+
+LANGUAGES = (
+    ('zh-cn',u'简体中文'),
+    )
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

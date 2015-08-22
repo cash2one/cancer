@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -25,17 +27,17 @@ def login_view(request):
 		args['user_id'] = user_id	
 		if not user_id:
 			has_error = True
-			args['user_id_error'] = 'User Name can not be empty'
+			args['user_id_error'] = '用户名不能为空'
 
 		if not passwd:
 						has_error = True
-						args['passwd_error'] = 'Password can not be empty'
+						args['passwd_error'] = '密码不能为空'
 
 		user = authenticate(username=user_id, password=passwd)
 		
 		if not user:
 				has_error = True
-				args['validate_error'] = 'Error validating User Name and password'	
+				args['validate_error'] = '无法确认您的用户名密码，请确认输入正确'	
 
 		if has_error:
 			return render(request,'login.html',args)	
