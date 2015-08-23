@@ -60,12 +60,27 @@ def general_search(request):
 	patients =  Patient.objects.all().order_by('DB_ID')#Patient.objects.filter(created_by__NTID__iexact=request.user.username).order_by('-created_date')
 
 	#other related table fields
+	fields = list()
+	#for patient in patients:
+		#cancer_cell = []
+		#cancers = Cancer.objects.filter(DB_ID__iexact=patient.DB_ID).order_by('DB_ID')
+		#for field in cancer._meta.get_all_field_names():
+		#	if getattr(cancer,field.name)):
+				#try:
+					#str_value = str(getattr(cancer,field.name))
+					#cancer_cell.append(str_value)
+		#		pass
+		#symptom = Symptom.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#treatement = Treatment.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#test = Test.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#followup = FollowUp.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
+		#questionnaire = Questionnaire.objects.filter(DB_ID__iexact=objs.DB_ID).order_by('DB_ID')
 
 	args = {}
 	args.update(csrf(request))
 	args['user'] = request.user
 	args['patients'] = patients
-	#args['cancer'] = cancer
+	#args['cancers'] = cancers
 	#args['symptom'] = symptom
 	#args['test'] = test
 	#args['followup'] = followup
@@ -79,10 +94,10 @@ def detail(request, DB_ID):
 		patient = get_object_or_404(Patient, DB_ID=DB_ID)
 
 		#other related table fields
-		#cancers = Cancer.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		#symptoms = Symptom.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		#treatements = Treatment.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
-		#tests = Test.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		cancers = Cancer.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		symptoms = Symptom.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		treatements = Treatment.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
+		tests = Test.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
 		#followups = FollowUp.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
 		#questionnaires = Questionnaire.objects.filter(DB_ID__iexact=DB_ID).order_by('DB_ID')
 
@@ -90,9 +105,9 @@ def detail(request, DB_ID):
 		args.update(csrf(request))
 		args['user'] = request.user
 		args['patient'] = patient
-		#args['cancers'] = cancers
-		#args['symptoms'] = symptoms
-		#args['tests'] = tests
+		args['cancers'] = cancers
+		args['symptoms'] = symptoms
+		args['tests'] = tests
 		#args['followups'] = followups
 		#args['questionnaires'] = questionnaires
 		

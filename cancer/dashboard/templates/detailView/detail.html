@@ -111,81 +111,393 @@ $(document).ready(function() {
 
   <div class="tab-pane fade active in" id="home">
 
+
+<!--
    <div class="panel panel-success" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
     <div class="panel-heading" >
       <h3>病人基本信息</h3>
     </div>
   </div>
-
-
-
-
-    <div class="box-container" style='width:80%'>
-    <div class="content">
-      <header style=" margin-top: 0px; margin-bottom: 50px; padding-bottom: 0px; height: 100px; padding-top: 0px; ">
-      <div style="text-align: center;">
-      <h1 style="text-align: center; vertical-align: middle;display: inline-block;"> 病人时间轴</h1>      
-      </div>
-      </header>
-    <section id="cd-timeline" class="cd-container">
-      {% for cancer in cancers %}
-      <div class="cd-timeline-block">
-        <div class="cd-timeline-img cd-movie">
-        </div> <!-- cd-timeline-img -->
-        <div class="cd-timeline-content">
-          <p>肿瘤基本信息: {{cancer.project_name}}</p>
-          <h2>诊断: {{cancer.diagnosis}}</h2>
-          <a href="{{experiment.get_absolute_url}}" class="cd-read-more">详细信息</a>
-          <span class="cd-date">TODO</span>
-        </div> <!-- cd-timeline-content -->
-      </div> <!-- cd-timeline-block -->
-      {% endfor %}
-    </section> <!-- cd-timeline -->
-    </div>
-    </div>
-
-<!--
-<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
-  <thead>
-      <tr>
-          <th>数据库编号</th>
-          <th>姓名</th>
-          <th>病历号</th>
-          <th>性别</th>
-          <th>出生年月</th>
-          <th>身份证号</th>
-          <th>地区</th>
-          <th>随访电话</th>
-          <th>去世日期</th>
-          <th>关系</th>
-          <th>电话</th>
-          <th>Email</th>
-          <th>微信</th>
-          <th>在随访中</th>
-      </tr>
-  </thead>
-
-  <tbody>
-  <tr>
-      <td><a href="{{patient.get_absolute_url}}">{{patient.DB_ID}}</a></td>
-      <td>{{patient.name}}</td>
-      <td>{{patient.EMR_id}}</td>
-      <td>{{patient.sex}}</td>
-      <td>{{patient.DOB}}</td>
-      <td>{{patient.social_id}}</td>
-      <td>{{patient.location}}</td>
-      <td>{{patient.phone}}</td>
-      <td>{{patient.DOD}}</td>
-      <td>{{patient.get_relative_display}}</td>
-      <td>{{patient.relative_phone}}</td>
-      <td>{{patient.relative_email}}</td>
-      <td>{{patient.relative_wechat}}</td>
-      <td>{{patient.get_relative_in_contact_display}}</td>
-
-  </tr>
-  </tbody>
-</table>
 -->
+
+        <!-- Main content -->
+        <section class="content">
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{{patient.name}} &nbsp;</h3>
+                  
+                  <!-- TAGS -->
+                  <span class="label label-success">已出院</span>
+
+
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                <div class="row">
+                <div class="col-md-6"><!-- /.col basic info table-->
+                      <p class="text-center">
+                       <strong>基本信息</strong>
+                      </p>
+                    <div class="box">
+                    
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:200px;">
+                      <table class="table table-hover">
+
+                        <tr>
+                          <td><strong>姓名</strong></td>
+                          <td>{{patient.name}}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>性别</strong></td>
+                          <td>{{patient.sex}}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>出生年月</strong></td>
+                          <td>{{patient.DOB}}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>地区</strong></td>
+                          <td>{{patient.location}}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>数据库编号(病历号)</strong></td>
+                          <td>{{patient.DB_ID}}({{patient.EMR_id}})</td>
+                        </tr>
+
+
+
+                      </table>
+                    </div><!-- /.box-body -->
+                  </div><!-- /.box -->
+
+                </div><!-- /.col basic info table-->
+                    
+                <div class="col-md-4" ><!-- /.col basic info table-->
+                      <p class="text-center">
+                       <strong>最近诊断</strong>
+                      </p>
+                    <div class="box">
+                    
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:200px;">
+                      <table class="table table-hover">
+                        {%for test in tests%}
+                        {%if test.result_discription%}
+                        <tr>
+                          <td><strong>检查</strong></td>
+                          <td>{{test.result_discription}}({{test.project_date}})</td>
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+
+                        {%for cancer in cancers%}
+                        {%if cancer.diagnosis%}
+                        <tr>
+                          <td><strong>诊断</strong></td>
+                          <td>{{cancer.diagnosis}}({{cancer.admission_date}})</td>
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+
+                        {%for treatment in treatments%}
+                        {%if treatment.surgery_date%}
+                        <tr>
+                          <td><strong>手术</strong></td>
+                          <td>{{treatment.surgery_date}}({{treatment.surgeon}})</td>
+                        </tr>
+                        {%endif%}
+                        {%endfor%}
+
+                      </table>
+                    </div><!-- /.box-body -->
+                  </div><!-- /.box -->
+
+                </div><!-- /.col basic info table-->
+
+                    <div class="col-md-2"><!-- /.col basic info table-->
+                      <p class="text-center">
+                       <strong>其他信息</strong>
+                      </p>
+                    <div class="box">
+                    
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:200px;">
+                      <table class="table table-hover">
+
+                        <tr>
+                          <td><strong>身份证号: {{patient.social_id}}</strong></td>
+                        </tr>
+                        <tr>
+                          <td><strong>随访电话: {{patient.phone}}</strong></td>
+                        </tr>
+                        <tr>
+                          <td><strong>随访中: {{patient.relative_in_contact}}</strong></td>
+                        </tr>
+                        <tr>
+                          <td><strong>去世日期: {{patient.DOD}}</strong></td>
+                        </tr>
+                      </table>
+                    </div><!-- /.box-body -->
+                  </div><!-- /.box -->
+
+                </div><!-- /.col basic info table-->
+
+                  </div><!-- /.row -->
+                </div><!-- ./box-body -->
+                <div class="box-footer">
+                  <div class="row">
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <h4 class="description-percentage"><a href='/TODO/' ><i class="ion ion-edit" style='margin-left:20px;' alt='点击以编辑'>&nbsp;编辑（beta）&nbsp;</i></a></h4>
+                        <small class="description-text">编辑该病人的相关信息</small>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <h4 class="description-percentage"><a href='/TODO/' ><i class="ion ion-bookmark" style='margin-left:20px;' alt='标记该病人'>&nbsp;标记（beta）&nbsp;</i></a></h4>
+                        <small class="description-text">标记该病人供日后检索</small>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <h4 class="description-percentage"><a href='/TODO/' ><i class="ion ion-paper-airplane" style='margin-left:20px;' alt='点击以发送该病人信息'>&nbsp;发送（beta）&nbsp;</i></a></h4>
+                        <small class="description-text">发送该病人信息至其他医师</small>
+                      </div><!-- /.description-block -->
+                    </div><!-- /.col -->
+                    <div class="col-sm-3 col-xs-6">
+                      <div class="description-block border-right">
+                        <h4 class="description-percentage"><a href='/TODO/' ><i class="ion ion-ios-cloud-download-outline" style='margin-left:20px;' alt='点击以下载'>&nbsp;下载（beta）&nbsp;</i></a></h4>
+                        <small class="description-text">保存该病人的基本信息至本地</small>
+                      </div><!-- /.description-block -->
+                    </div>
+                  </div><!-- /.row -->
+                </div><!-- /.box-footer -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+
+          <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-7 connectedSortable">
+              <!-- TO DO List -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="ion ion-clipboard"></i>
+                  <h3 class="box-title">重要事件时间轴 (beta)</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+         
+
+
+        <section class="content">
+
+          <!-- row -->
+          <div class="row">
+            <div class="col-md-12" style="overflow-y: scroll; height:450px;">
+              <!-- The time line -->
+              <ul class="timeline">
+                <!-- timeline time label -->
+                <li class="time-label">
+                  <span class="bg-red">
+                    2015/08
+                  </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                {%for cancer in cancers%}
+                <li>
+                  <i class="fa fa-heartbeat bg-yellow"></i>
+                  <div class="timeline-item">
+                    <span class="time"><i class="fa fa-clock-o"></i> {{cancer.admission_date}}</span>
+                    <h3 class="timeline-header"><a href="#">肿瘤信息</a>诊断</h3>
+                    <div class="timeline-body">
+                      {{cancer.diagnosis}}
+                    </div>
+                    <div class="timeline-footer">
+                      <a class="btn btn-primary btn-xs">详细信息</a>
+                    </div>
+                  </div>
+                </li>
+                <!-- END timeline item -->
+                {%endfor%}
+
+                {%for test in tests%}
+                <!-- timeline item -->
+                <li>
+                  <i class="fa fa-stethoscope bg-aqua"></i>
+                  <div class="timeline-item">
+                    <span class="time"><i class="fa fa-clock-o"></i> {{test.project_date}}</span>
+                    <h3 class="timeline-header no-border"><a href="#">辅助检查</a>结果描述</h3>
+                    <div class="timeline-body">
+                      {{test.result_discription}}
+                    </div>
+                    <div class="timeline-footer">
+                      <a class="btn btn-primary btn-xs">详细信息</a>
+                    </div>
+                  </div>
+                </li>
+                <!-- END timeline item -->
+                {%endfor%}
+
+                <!-- timeline time label -->
+                <li class="time-label">
+                  <span class="bg-green">
+                    2014/08
+                  </span>
+                </li>
+                <!-- /.timeline-label -->
+                <!-- timeline item -->
+                <li>
+                  <i class="fa fa-camera bg-purple"></i>
+                  <div class="timeline-item">
+                    <span class="time"><i class="fa fa-clock-o"></i> 2014/07/22</span>
+                    <h3 class="timeline-header"><a href="#">检查结果</a> 胸透</h3>
+                    <div class="timeline-body">
+                      <img src="http://placehold.it/150x100" alt="..." class="margin">
+                      <img src="http://placehold.it/150x100" alt="..." class="margin">
+                      <img src="http://placehold.it/150x100" alt="..." class="margin">
+                      <img src="http://placehold.it/150x100" alt="..." class="margin">
+                    </div>
+                  </div>
+                </li>
+                <!-- END timeline item -->
+                
+                <li>
+                  <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+              </ul>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+        </section><!-- /.content -->
+
+                </div><!-- /.box-body -->
+    <!--
+                <div class="box-footer clearfix no-border">
+                  <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
+                </div>
+    -->
+              </div><!-- /.box -->
+
+
+
+            </section><!-- /.Left col -->
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <section class="col-lg-5 connectedSortable">
+
+
+              <!-- Calendar -->
+              <div id='cal' class="box box-solid bg-green-gradient">
+                <div class="box-header">
+                  <i class="fa fa-calendar"></i>
+                  <h3 class="box-title">日程表（beta）</h3>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <!-- button with a dropdown -->
+                    <button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div><!-- /. tools -->
+                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <!--The calendar -->
+                  <div id="calendar1" style="width: 100%"></div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            
+              <!-- TABLE: LATEST ORDERS -->
+              <div class="box box-info">
+                <div class="box-header with-border">
+                 <i class="ion ion-android-cloud-done"></i> 
+     <h3 class="box-title">相似病人（beta）</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <div class="table-responsive">
+                    <table class="table no-margin">
+                      <thead>
+                        <tr>
+                          <th>姓名</th>
+                          <th>数据库编号</th>
+                          <th>诊断</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% autoescape off %}{{ finished }}{% endautoescape %}
+          </tbody>
+                    </table>
+                  </div><!-- /.table-responsive -->
+                </div><!-- /.box-body -->
+                <div class="box-footer clearfix">
+                  <a href="/TODO/" class="btn btn-sm btn-default btn-flat pull-right">View All</a>
+                </div><!-- /.box-footer -->
+              </div><!-- /.box -->
+
+
+              <!-- PRODUCT LIST -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                 <i class="ion ion-document-text"></i> 
+     <h3 class="box-title">我的日志</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <ul class="products-list product-list-in-box">
+                  {%if posts%}
+                  {% for p in posts|slice:":5" %}
+        <li class="item">
+                      <div class="product-info">
+                        <a href="/virtual/get/{{p.related_exp.experiment_id}}/" class="product-title">{{p.subject}}</a>
+                        <span class="product-description">
+                          {{p.content}}
+                          <p >Posted by {% autoescape off %}{{p.created_by.get_taged_investigator_name}}{% endautoescape %} on {{p.created_date}}</p>
+                          {%if p.updated_by.NTID != None %}
+                          <p>Last Modified by {% autoescape off %}{{p.updated_by.get_taged_investigator_name}}{% endautoescape %} on {{p.updated_date}}</p>
+                          {%endif%}
+                        </span>
+                      </div>
+                    </li><!-- /.item -->
+                  {% endfor %}
+                  {%else%}
+                    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+                      <div class="panel-heading" >
+                        <h4>暂无日志</h4>
+                        <small class="description-percentage"><a href='/TODO/' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    </div>
+                  {%endif%}
+
+                  </ul>
+                </div><!-- /.box-body -->
+
+              </div><!-- /.box -->
+
+            </section><!-- right col -->
+          </div><!-- /.row (main row) -->
+
+        </section><!-- /.content -->
+
+
+
+
+
+
+
+
+
+
+
 
  </div> <!--tab 1-->
  
