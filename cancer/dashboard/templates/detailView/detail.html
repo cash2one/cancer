@@ -24,50 +24,144 @@
   </style>
 
 
-<script>
+    <script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 
-$(document).ready(function() {
+    $.extend( $.fn.DataTable.defaults, {
+        "searching": true,
+        "ordering": true
+    } );
 
-    //hide empty columns
-    $('#recent tr th').each(function(i) {
-     //select all tds in this column
-     var tds = $(this).parents('table')
-              .find('tr td:nth-child(' + (i + 1) + ')');
-        //check if all the cells in this column are empty
-        if(tds.length == tds.filter(':empty').length) { 
-            //hide header
-            $(this).hide();
-            //hide cells
-            tds.hide();
-        } 
-    }); 
+    $(document).ready(function() {
+        //hide empty columns
+        $('#recent tr th').each(function(i) {
+         //select all tds in this column
+         var tds = $(this).parents('table')
+                  .find('tr td:nth-child(' + (i + 1) + ')');
+            //check if all the cells in this column are empty
+            if(tds.length == tds.filter(':empty').length) { 
+                //hide header
+                $(this).hide();
+                //hide cells
+                tds.hide();
+            } 
+        });
 
+        var table = $('#recent').DataTable( {
+            //highlight search text, CHECK
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                var settings = this.fnSettings();
+                var str = settings.oPreviousSearch.sSearch;
+                var regex = new RegExp( str, 'i');
+                $('td', nRow).each( function(i) {
+                    this.innerHTML = aData[i].replace( regex, function(matched) { return "<span class='filterMatches'>"+matched+"</span>";});
+                });
+                return nRow;
+            },
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
+            },
+            "scrollX": "200%",
+            "scrollY": 450,
+            "pageLength": 100,
+            "bAutoWidth": true ,
+            "fixedHeader": true,
+            "order": [[ 0, "desc" ]],
 
-     var table = $('#recent').dataTable( {
-        //highlight search text, CHECK
-        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            var settings = this.fnSettings();
-            var str = settings.oPreviousSearch.sSearch;
-            var regex = new RegExp( str, 'i');
-            $('td', nRow).each( function(i) {
-                this.innerHTML = aData[i].replace( regex, function(matched) { return "<span class='filterMatches'>"+matched+"</span>";});
+            "columnDefs": [
+                {
+                    // The `data` parameter refers to the data for the cell (defined by the
+                    // `data` option, which defaults to the column being worked with, in
+                    // this case `data: 0`.
+            className: "dt-center",
+            "render": function ( data, type, row ) {
+                        return data;
+                    },
+                    "targets": "_all"//[0,1,2,3,4,5]
+                },
+                { "visible": false,  "targets": [ ] }
+            ]
+        } );
+
+        // var HIDDEN_COLUMN_INDEX = 2;
+
+        // table.on('search', function () {
+        //     if (table.search().length) {
+        //         table.column(HIDDEN_COLUMN_INDEX).visible(true);
+        //     } else {
+        //         table.column(HIDDEN_COLUMN_INDEX).visible(false);
+        //     }
+        // });
+
+        // table.column(HIDDEN_COLUMN_INDEX).visible(false);
+
+        $('#download-csv').click(function() {
+            var filtered = table.rows({filter:'applied'})[0];
+            $.ajax({
+                method: 'POST',
+                url: 'download',
+                data: {
+                    indexes: filtered,
+                    csrfmiddlewaretoken: getCookie('csrftoken'),
+                },
+                success: function(response, status, xhr) {
+                    // check for a filename
+                    var filename = '';
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = filenameRegex.exec(disposition);
+                        if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                    }
+
+                    var type = xhr.getResponseHeader('Content-Type');
+                    var blob = new Blob([response], { type: type });
+
+                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                        window.navigator.msSaveBlob(blob, filename);
+                    } else {
+                        var URL = window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) {
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.location = downloadUrl;
+                            } else {
+                                a.href = downloadUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.click();
+                            }
+                        } else {
+                            window.location = downloadUrl;
+                        }
+
+                        setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                    }
+                }
             });
-            return nRow;
-        },
+        });
 
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
-        },
-        "scrollX": true,
-        "scrollY": 800,
-        "pageLength": 10,
-        "bAutoWidth": true,
-        'searchHighlight': true,
-        "order": [[ 2, "desc" ]],
-
-    } );//table
-} );
-</script>
+    } );
+    </script>
 
 
 
@@ -89,6 +183,7 @@ $(document).ready(function() {
   <li ><a href="#test" data-toggle="tab" >辅助检查</a></li>
   <li ><a href="#followup" data-toggle="tab" >随访情况</a></li>
   <li ><a href="#questionnaire" data-toggle="tab" >问卷评分</a></li>
+  <!--
   <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
       其他操作 <span class="caret"></span>
@@ -101,7 +196,7 @@ $(document).ready(function() {
       <li><a href="#" target="_blank" data-toggle="tab">添加日志</a></li>
     </ul>
   </li>
-
+-->
 </li>
 </ul>
 
@@ -133,6 +228,13 @@ $(document).ready(function() {
                   <!-- TAGS -->
                   <span class="label label-success">已出院</span>
 
+                  {% if patient.relative_in_contact%}
+                  <span class="label label-info">随访中</span>
+                  {%endif%}
+
+                  {% if patient.DOD%}
+                  <span class="label label-danger">已去世</span>
+                  {%endif%}
 
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -141,36 +243,37 @@ $(document).ready(function() {
                 </div><!-- /.box-header -->
                 <div class="box-body">
                 <div class="row">
-                <div class="col-md-6"><!-- /.col basic info table-->
+                <div class="col-md-4"><!-- /.col basic info table-->
                       <p class="text-center">
                        <strong>基本信息</strong>
                       </p>
                     <div class="box">
                     
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:200px;">
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:275px;">
                       <table class="table table-hover">
 
                         <tr>
-                          <td><strong>姓名</strong></td>
-                          <td>{{patient.name}}</td>
+                          <td><strong>姓名: {{patient.name}}</strong></td>
                         </tr>
                         <tr>
-                          <td><strong>性别</strong></td>
-                          <td>{{patient.sex}}</td>
+                          <td><strong>性别: {{patient.sex}}</strong></td>
                         </tr>
                         <tr>
-                          <td><strong>出生年月</strong></td>
-                          <td>{{patient.DOB}}</td>
+                          <td><strong>出生年月: {{patient.DOB}}</strong></td>
                         </tr>
                         <tr>
-                          <td><strong>地区</strong></td>
-                          <td>{{patient.location}}</td>
+                          <td><strong>地区: {{patient.location}}</strong></td>
                         </tr>
                         <tr>
-                          <td><strong>数据库编号(病历号)</strong></td>
-                          <td>{{patient.DB_ID}}({{patient.EMR_id}})</td>
+                          <td><strong>数据库编号(病历号): {{patient.DB_ID}}({{patient.EMR_id}})</strong></td>
                         </tr>
 
+                        <tr>
+                          <td><strong>身份证号: {{patient.social_id}}</strong></td>
+                        </tr>
+                        <tr>
+                          <td><strong>随访电话: {{patient.phone}}</strong></td>
+                        </tr>
 
 
                       </table>
@@ -179,13 +282,13 @@ $(document).ready(function() {
 
                 </div><!-- /.col basic info table-->
                     
-                <div class="col-md-4" ><!-- /.col basic info table-->
+                <div class="col-md-8" ><!-- /.col basic info table-->
                       <p class="text-center">
-                       <strong>最近诊断</strong>
+                       <strong>临床事件</strong>
                       </p>
                     <div class="box">
                     
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:200px;">
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:275px;">
                       <table class="table table-hover">
                         {%for test in tests%}
                         {%if test.result_discription%}
@@ -220,32 +323,6 @@ $(document).ready(function() {
 
                 </div><!-- /.col basic info table-->
 
-                    <div class="col-md-2"><!-- /.col basic info table-->
-                      <p class="text-center">
-                       <strong>其他信息</strong>
-                      </p>
-                    <div class="box">
-                    
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:200px;">
-                      <table class="table table-hover">
-
-                        <tr>
-                          <td><strong>身份证号: {{patient.social_id}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>随访电话: {{patient.phone}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>随访中: {{patient.relative_in_contact}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>去世日期: {{patient.DOD}}</strong></td>
-                        </tr>
-                      </table>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-
-                </div><!-- /.col basic info table-->
 
                   </div><!-- /.row -->
                 </div><!-- ./box-body -->
@@ -315,12 +392,9 @@ $(document).ready(function() {
                   <i class="fa fa-heartbeat bg-yellow"></i>
                   <div class="timeline-item">
                     <span class="time"><i class="fa fa-clock-o"></i> {{cancer.admission_date}}</span>
-                    <h3 class="timeline-header"><a href="#">肿瘤信息</a>诊断</h3>
+                    <h3 class="timeline-header"><a href="#">肿瘤信息</a>诊断  <a class="btn btn-primary btn-xs">详细信息</a></h3>
                     <div class="timeline-body">
                       {{cancer.diagnosis}}
-                    </div>
-                    <div class="timeline-footer">
-                      <a class="btn btn-primary btn-xs">详细信息</a>
                     </div>
                   </div>
                 </li>
@@ -333,12 +407,9 @@ $(document).ready(function() {
                   <i class="fa fa-stethoscope bg-aqua"></i>
                   <div class="timeline-item">
                     <span class="time"><i class="fa fa-clock-o"></i> {{test.project_date}}</span>
-                    <h3 class="timeline-header no-border"><a href="#">辅助检查</a>结果描述</h3>
+                    <h3 class="timeline-header no-border"><a href="#">辅助检查</a>结果描述  <a class="btn btn-primary btn-xs">详细信息</a></h3>
                     <div class="timeline-body">
                       {{test.result_discription}}
-                    </div>
-                    <div class="timeline-footer">
-                      <a class="btn btn-primary btn-xs">详细信息</a>
                     </div>
                   </div>
                 </li>
@@ -437,7 +508,7 @@ $(document).ready(function() {
                   </div><!-- /.table-responsive -->
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
-                  <a href="/TODO/" class="btn btn-sm btn-default btn-flat pull-right">View All</a>
+                  <a href="/TODO/" class="btn btn-sm btn-default btn-flat pull-right">查看全部</a>
                 </div><!-- /.box-footer -->
               </div><!-- /.box -->
 

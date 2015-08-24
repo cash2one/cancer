@@ -57,28 +57,14 @@ $(document).ready(function() {
         },
         "scrollX": "20%",
         "scrollY": 400,
+        "fixedHeader": true,
         "pageLength": 10,
         "bAutoWidth": true,
-        'searchHighlight': true,
         "order": [[ 2, "desc" ]],
         //"oSearch": {"sSearch": "{{g}}"},
         "aoSearchCols": [null,{ "sSearch": "{{p}}"},null,{ "sSearch": "{{u}}"},null,null],
 
-        "columnDefs": [
-            {
-                // The `data` parameter refers to the data for the cell (defined by the
-                // `data` option, which defaults to the column being worked with, in
-                // this case `data: 0`.
-                className: "dt-center",
-                "render": function ( data, type, row ) {
-                    return data;
-                },
-                "targets": "_all"//[0,1,2,3,4,5]
-            },
-
-            //{ "visible": false, "targets": 0 
-            //},
-        ]
+ 
     } );//table
 
 
@@ -270,11 +256,10 @@ $(document).ready(function() {
             <div class="col-xs-12">
 
               <div class="box">
-                <div class="box-header">
-                </div><!-- /.box-header -->
+
                 <div class="box-body">
-{% if objs.count %}
-<table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0" width="100%">
+    {% if objs.count %}
+    <table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>数据库编号</th>
@@ -316,6 +301,46 @@ $(document).ready(function() {
             </tr>
         </thead>
 
+        <tfoot>
+            <tr>
+                <th>数据库编号</th>
+                <th>姓名</th>
+                <th>病历号</th>
+                <th>手术日期</th>
+                <th>术者</th>
+                <th>手术入路</th>
+                <th>手术部位</th>
+                <th>手术方式</th>
+                
+                <th>肿瘤包膜破损情况</th>
+                <th>为保证边界牺牲的组织</th>
+                <th>术中骨水泥强化</th>
+                <th>术中射频消融</th>
+                
+                <th>手术总时间（min）</th>
+                <th>出血量（ml）</th>
+                <th>异体血（ml）</th>
+                <th>术中并发症</th>
+                <th>术中备注</th>
+                <th>术后并发症</th>
+                <th>动脉栓塞（方式）</th>
+                <th>动脉栓塞（动脉名称）</th>
+                <th>经皮骨水泥加强（节段）</th>
+                <th>经皮骨水泥加强（部位）</th>
+                <th>支具支持治疗（支具类型）</th>
+                <th>支具支持治疗（开始年月）</th>
+                <th>放疗（总剂量 Gy）</th>
+                <th>放疗（疗程）</th>
+                <th>放疗（开始日期）</th>
+                <th>化疗（方案）</th>
+                <th>化疗（开始日期）</th>
+                <th>其他治疗（药物）</th>
+                <th>其他治疗（开始日期）</th>
+                <th>其他治疗（结束日期）</th>
+                <th>其他描述</th>
+
+            </tr>
+        </tfoot>
 
         <tbody>
                 {% for obj in objs %}

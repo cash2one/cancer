@@ -29,7 +29,7 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
         
-    <table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%" >
+    <table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="100%" >
         <thead>
             <tr>
                 <th colspan="6">病人基本信息</th> 
@@ -117,46 +117,28 @@
     </style>
 
     <script>
-    $.extend( $.fn.dataTable.defaults, {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    $.extend( $.fn.DataTable.defaults, {
         "searching": true,
         "ordering": true
     } );
 
-    var editor; // use a global for the submit and return data rendering in the examples
-
     $(document).ready(function() {
-
-
-        var table = $('#recent').dataTable( {
-                        
-
-
-            //highlight search text, CHECK
-            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                var settings = this.fnSettings();
-                var str = settings.oPreviousSearch.sSearch;
-                var regex = new RegExp( str, 'i');
-                $('td', nRow).each( function(i) {
-                    this.innerHTML = aData[i].replace( regex, function(matched) { return "<span class='filterMatches'>"+matched+"</span>";});
-                });
-
-                return nRow;
-            },
-
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
-            },
-            //"scrollX": "100%",
-            "stateSave": true,
-            "pageLength": 100,
-            "order": [[ 0, "desc" ]],
-
-            "columnDefs": [
-                {className: "dt-center","targets": "_all"},
-                {"targets":  [5] ,"visible": false},
-            ],
-
-        } );//table
 
         // //hide empty columns
         // $('#recent tr th').each(function(i) {
@@ -170,8 +152,102 @@
         //         //hide cells
         //         tds.hide();
         //     } 
-        // }); 
+        // });
 
-    } );
+        var table = $('#recent').DataTable( {
+            //highlight search text, CHECK
+            "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                var settings = this.fnSettings();
+                var str = settings.oPreviousSearch.sSearch;
+                var regex = new RegExp( str, 'i');
+                $('td', nRow).each( function(i) {
+                    this.innerHTML = aData[i].replace( regex, function(matched) { return "<span class='filterMatches'>"+matched+"</span>";});
+                });
+                return nRow;
+            },
+
+
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
+            },
+            //"scrollX": "100%",
+            "scrollY": 450,
+            "pageLength": 100,
+            //"bAutoWidth": true ,
+            //"fixedHeader": true,
+            "order": [[ 0, "desc" ]],
+
+            "columnDefs": [
+                {"className": "dt-center","targets": "_all"},
+                { "visible": false,  "targets": [ ] }
+            ]
+
+
+        } );
+
+        var HIDDEN_COLUMN_INDEX = 5;
+
+        table.on('search', function () {
+            if (table.search().length) {
+                table.column(HIDDEN_COLUMN_INDEX).visible(true);
+            } else {
+                table.column(HIDDEN_COLUMN_INDEX).visible(false);
+            }
+        });
+
+        table.column(HIDDEN_COLUMN_INDEX).visible(false);
+
+        $('#download-csv').click(function() {
+            var filtered = table.rows({filter:'applied'})[0];
+            $.ajax({
+                method: 'POST',
+                url: 'download',
+                data: {
+                    indexes: filtered,
+                    csrfmiddlewaretoken: getCookie('csrftoken'),
+                },
+                success: function(response, status, xhr) {
+                    // check for a filename
+                    var filename = '';
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = filenameRegex.exec(disposition);
+                        if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                    }
+
+                    var type = xhr.getResponseHeader('Content-Type');
+                    var blob = new Blob([response], { type: type });
+
+                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                        window.navigator.msSaveBlob(blob, filename);
+                    } else {
+                        var URL = window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) {
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.location = downloadUrl;
+                            } else {
+                                a.href = downloadUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.click();
+                            }
+                        } else {
+                            window.location = downloadUrl;
+                        }
+
+                        setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                    }
+                }
+            });
+        });
+
+    } ); //table end
     </script>
 {%endblock%}
