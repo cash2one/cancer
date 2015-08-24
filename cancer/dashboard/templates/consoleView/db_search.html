@@ -70,7 +70,7 @@
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
             },
-            "scrollX": "200%",
+            "scrollX": "150%",
             "scrollY": 450,
             "pageLength": 100,
             "bAutoWidth": true ,
@@ -195,7 +195,7 @@
                 {% if db_name == "patient" %}
                     <th>性别</th>
                     <th>出生年月</th>
-                    <th>身份证号</th>
+                    <!--<th>身份证号</th>-->
                     <th>地区</th>
                     <th>随访电话</th>
                     <th>去世日期</th>
@@ -320,142 +320,7 @@
                 -->
             </tr>
         </thead>
-        <tfoot>
-
-           <tr>
-                <th>数据库编号</th>
-                <th>姓名</th>
-                <th>病历号</th>
-                
-                {% if db_name == "patient" %}
-                    <th>性别</th>
-                    <th>出生年月</th>
-                    <th>身份证号</th>
-                    <th>地区</th>
-                    <th>随访电话</th>
-                    <th>去世日期</th>
-                    <th>关系</th>
-                    <th>电话</th>
-                    <th>Email</th>
-                    <th>微信</th>
-                    <th>在随访中</th>
-                {% endif %}
-
-                {% if db_name == "cancer" %}
-                    <th>入院日期</th>
-                    <th>出院日期</th>
-                    <th>住院科室</th>
-                    <th>术前诊断</th>
-                    <th>最终诊断</th>
-                    <th>诊断依据</th>
-                    <th>肿瘤性质</th>
-                    <th>肿瘤分类</th>
-                    <th>肿瘤复发</th>
-                    <th>脊柱病灶数目</th>
-                    <th>肿瘤部位</th>
-                    <th>脊柱外骨累及</th>
-                    <th>原发灶外重要脏器累及</th>
-                    <th>重要脏器累及可控制</th>
-                    <th>备注</th>
-
-                {% endif %}
-
-
-                {% if db_name == "symptom" %}
-                    <th>入院日期</th>
-                    <th>疼痛VAS（轻中重）t为不清</th>
-                    <th>夜间痛</th>
-                    <th>疼痛需卧床缓解</th>
-                    <th>根性疼痛</th>
-                    <th>肢体麻木无力</th>
-                    <th>体表包块</th>
-                    <th>小便异常</th>
-                    <th>病程时间（月）</th>
-                    <th>最重病变水平以远肌力</th>
-                    <th>最重病变水平以远感觉</th>
-                {% endif %}
-
-
-                {% if db_name == "treatment" %}
-                    <th>手术日期</th>
-                    <th>术者</th>
-                    <th>手术入路</th>
-                    <th>手术部位</th>
-                    <th>手术方式</th>
-                    <th>肿瘤包膜破损情况</th>
-                    <th>为保证边界牺牲的组织</th>
-                    <th>术中骨水泥强化</th>
-                    <th>术中射频消融</th>
-                    <th>手术总时间（min）</th>
-                    <th>出血量（ml）</th>
-                    <th>异体血（ml）</th>
-                    <th>术中并发症</th>
-                    <th>术中备注</th>
-                    <th>术后并发症</th>
-                    <th>动脉栓塞（方式）</th>
-                    <th>动脉栓塞（动脉名称）</th>
-                    <th>经皮骨水泥加强（节段）</th>
-                    <th>经皮骨水泥加强（部位）</th>
-                    <th>支具支持治疗（支具类型）</th>
-                    <th>支具支持治疗（开始年月）</th>
-                    <th>放疗（总剂量 Gy）</th>
-                    <th>放疗（疗程）</th>
-                    <th>放疗（开始日期）</th>
-                    <th>化疗（方案）</th>
-                    <th>化疗（开始日期）</th>
-                    <th>其他治疗（药物）</th>
-                    <th>其他治疗（开始日期）</th>
-                    <th>其他治疗（结束日期）</th>
-                    <th>其他描述</th>
-                {% endif %}
-
-
-                {% if db_name == "test" %}
-                    <th>项目日期</th>
-                    <th>项目名称</th>
-                    <th>结果描述</th>
-                    <th>诊断结论</th>
-                    <th>是否术前检查</th>
-                    <th>WBB分期(1-12)</th>
-                    <th>WBB分期(A-F)</th>
-                    <th>CT病变性质</th>
-                    <th>X光顺列</th>
-                    <th>塌陷</th>
-                    <th>后外侧受累</th>
-                    <th>椎动脉受累</th>
-                    <th>Enneking分期</th>
-                    <th>备注</th>
-                {% endif %}
-
-                {% if db_name == "followup" %}
-                    <th>主诉</th>
-                    <th>复发</th>
-                    <th>转移</th>
-                    <th>内固定松动</th>
-                    <th>内固定断裂</th>
-                    <th>CT融合</th>
-                    <th>随访方式</th>
-                    <th>死亡日期</th>
-                    <th>随访日期</th>
-                    <th>备注</th>
-
-                {% endif %}
-
-
-                {% if db_name == "questionnaire" %}
-                    <th>EQ5D-1</th>
-                    <th>EQ5D-2</th>
-                    <th>EQ5D-3</th>
-                    <th>EQ5D-4</th>
-                    <th>EQ5D-5</th>
-                    <th>问卷日期</th>
-                {% endif %}
-                <!--
-                
-                -->
-            </tr>
-
-        </tfoot>
+        
 
         <tbody>
                 {% for obj in objs %}
@@ -467,7 +332,7 @@
                             {% if db_name == "patient" %}
                                 <td>{{obj.sex}}</td>
                                 <td>{{obj.DOB}}</td>
-                                <td>{{obj.social_id}}</td>
+                                <!--<td>{{obj.social_id}}</td>-->
                                 <td>{{obj.location}}</td>
                                 <td>{{obj.phone}}</td>
                                 <td>{{obj.DOD}}</td>

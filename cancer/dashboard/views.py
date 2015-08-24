@@ -14,7 +14,7 @@ import csv
 
 @login_required
 def index(request):
-	objs = Treatment.objects.filter(surgeon__iexact=u'刘忠军')#request.user.username).order_by('DB_ID')
+	objs = Patient.objects.all().order_by('DB_ID')#(surgeon__iexact=u'刘忠军')#request.user.username).order_by('DB_ID')
 	args = {}
 	args.update(csrf(request))
 	args['user'] = request.user
@@ -60,7 +60,11 @@ def db_search(request,db_name):
 def db_download(request,db_name):
 	if request.POST:
 		response = HttpResponse(content_type='text/csv')
-		response['Content-Disposition'] = 'attachment; filename=download.csv'
+		response['Content-Disposition'] = 'attachment; filename=%s.csv' % db_name
+
+		#response = HttpResponse(content_type='application/vnd.ms-excel')
+		#response['Content-Disposition'] = 'attachment; filename=%s.xls' % db_name
+
 		writer = csv.writer(response)
 		indexes = request.POST.getlist('indexes[]')
 
@@ -144,7 +148,7 @@ def db_download(request,db_name):
 			all_objs =  Symptom.objects.all().order_by('DB_ID')#Patient.objects.filter(created_by__NTID__iexact=request.user.username).order_by('-created_date')
 			objs = [all_objs[int(idx)] for idx in indexes]
 			writer.writerow([
-				'姓名',
+				"姓名",
 				'病历号',
 				'入院日期',
 				'疼痛VAS（轻中重）t为不清',

@@ -249,7 +249,7 @@
                       </p>
                     <div class="box">
                     
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:275px;">
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:245px;">
                       <table class="table table-hover">
 
                         <tr>
@@ -266,10 +266,6 @@
                         </tr>
                         <tr>
                           <td><strong>数据库编号(病历号): {{patient.DB_ID}}({{patient.EMR_id}})</strong></td>
-                        </tr>
-
-                        <tr>
-                          <td><strong>身份证号: {{patient.social_id}}</strong></td>
                         </tr>
                         <tr>
                           <td><strong>随访电话: {{patient.phone}}</strong></td>
@@ -288,13 +284,19 @@
                       </p>
                     <div class="box">
                     
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:275px;">
+                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:245px;">
                       <table class="table table-hover">
                         {%for test in tests%}
                         {%if test.result_discription%}
                         <tr>
-                          <td><strong>检查</strong></td>
-                          <td>{{test.result_discription}}({{test.project_date}})</td>
+                          <td><strong>{{test.get_project_name_display}}</strong></td>
+                          <td>结果描述: {{test.result_discription}}({{test.project_date}})</td>
+                        </tr>
+                        {%endif%}
+                        {%if test.diagosis%}
+                        <tr>
+                          <td><strong>{{test.get_project_name_display}}</strong></td>
+                          <td>诊断结论: {{test.diagosis}}({{test.project_date}})</td>
                         </tr>
                         {%endif%}
                         {%endfor%}
@@ -311,7 +313,7 @@
                         {%for treatment in treatments%}
                         {%if treatment.surgery_date%}
                         <tr>
-                          <td><strong>手术</strong></td>
+                          <td><strong>{{treatment.location}}{{treatment.approach}}手术</strong></td>
                           <td>{{treatment.surgery_date}}({{treatment.surgeon}})</td>
                         </tr>
                         {%endif%}
@@ -407,7 +409,7 @@
                   <i class="fa fa-stethoscope bg-aqua"></i>
                   <div class="timeline-item">
                     <span class="time"><i class="fa fa-clock-o"></i> {{test.project_date}}</span>
-                    <h3 class="timeline-header no-border"><a href="#">辅助检查</a>结果描述  <a class="btn btn-primary btn-xs">详细信息</a></h3>
+                    <h3 class="timeline-header no-border"><a href="#">{{test.get_project_name_display}}</a>结果描述  <a class="btn btn-primary btn-xs">详细信息</a></h3>
                     <div class="timeline-body">
                       {{test.result_discription}}
                     </div>
@@ -463,23 +465,6 @@
             <section class="col-lg-5 connectedSortable">
 
 
-              <!-- Calendar -->
-              <div id='cal' class="box box-solid bg-green-gradient">
-                <div class="box-header">
-                  <i class="fa fa-calendar"></i>
-                  <h3 class="box-title">日程表（beta）</h3>
-                  <!-- tools box -->
-                  <div class="pull-right box-tools">
-                    <!-- button with a dropdown -->
-                    <button class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-success btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>
-                  </div><!-- /. tools -->
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <!--The calendar -->
-                  <div id="calendar1" style="width: 100%"></div>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
             
               <!-- TABLE: LATEST ORDERS -->
               <div class="box box-info">
@@ -517,7 +502,7 @@
               <div class="box box-primary">
                 <div class="box-header with-border">
                  <i class="ion ion-document-text"></i> 
-     <h3 class="box-title">我的日志</h3>
+     <h3 class="box-title">备注</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -543,7 +528,7 @@
                   {%else%}
                     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
                       <div class="panel-heading" >
-                        <h4>暂无日志</h4>
+                        <h4>备注</h4>
                         <small class="description-percentage"><a href='/TODO/' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
                       </div>
                     </div>
