@@ -285,6 +285,7 @@
                     <div class="box">
                     
                     <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:245px;">
+                      {%if tests%}
                       <table class="table table-hover">
                         {%for test in tests%}
                         {%if test.result_discription%}
@@ -320,6 +321,14 @@
                         {%endfor%}
 
                       </table>
+                      {%else%}
+                    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+                      <div class="panel-heading" >
+                        <h4>暂无临床事件</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    </div>
+                  {%endif%}
                     </div><!-- /.box-body -->
                   </div><!-- /.box -->
 
@@ -528,8 +537,8 @@
                   {%else%}
                     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
                       <div class="panel-heading" >
-                        <h4>备注</h4>
-                        <small class="description-percentage"><a href='/TODO/' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                        <h4>暂无备注</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
                       </div>
                     </div>
                   {%endif%}
