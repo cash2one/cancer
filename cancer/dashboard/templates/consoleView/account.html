@@ -15,6 +15,10 @@
 	}
   .filterMatches { background-color: #FFFF00; }
 
+  .content{
+    min-height:75px !important;
+  }
+
   </style>
 
 
@@ -51,12 +55,12 @@ $(document).ready(function() {
             });
             return nRow;
         },
-
+        "paging": false,
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.8/i18n/Chinese.json"
         },
         "scrollX": "100%",
-        "scrollY": 400,
+        "scrollY": 195,
         "fixedHeader": true,
         "pageLength": 10,
         "bAutoWidth": true,
@@ -183,7 +187,7 @@ $(document).ready(function() {
         </section>
 
         <!-- Main content -->
-        <section class="content" >
+        <section class="content">
 
           <!-- Small boxes (Stat box) -->
           <div class="row">
@@ -245,6 +249,7 @@ $(document).ready(function() {
             </a>
           </div><!-- /.row -->
           <!-- Main row -->
+        </section>
 
 
         <!-- Content Header (Page header) -->
@@ -261,7 +266,7 @@ $(document).ready(function() {
               <div class="box">
                 <div class="box-body">
                   {% if objs.count %}
-                  <table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0" width="100%">
+                  <table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0">
                       <thead>
                           <tr>
                               <th>数据库编号</th>
@@ -324,8 +329,8 @@ $(document).ready(function() {
 	      <!--Chart section-->
         <section class="content-header">
           <h1>
-            图表（测试版）
-            <small>病人数据统计</small>
+            数据统计
+            <small>测试版</small>
           </h1>
         </section>
 	       <section class="content" id='charts'>
@@ -391,7 +396,12 @@ $(document).ready(function() {
 
 
         <!--email and other section-->
-
+        <section class="content-header">
+          <h1>
+            工具
+            <small>测试版</small>
+          </h1>
+        </section>
          <section class="content" id='email'>
            <div class="row">
             <div class="col-md-6">
