@@ -116,3 +116,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")  #should not use "/static/" with
 STATICFILES_DIRS = ('/Users/mahandong/Dropbox/entrepreneur/Boson/Projects/nfDjangoApp/static',)
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.pfizer.com'#'smtp.gmail.com'
+EMAIL_HOST_USER = 'SEVGBL-ORUCOMPBIO@pfizer.com'#'handongma.work@gmail.com'
+EMAIL_HOST_PASSWORD ='Pf139394'#'mhdgoogle1384'
+EMAIL_PORT = 587
+

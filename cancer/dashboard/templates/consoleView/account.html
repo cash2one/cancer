@@ -183,70 +183,74 @@ $(document).ready(function() {
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content" >
+
           <!-- Small boxes (Stat box) -->
           <div class="row">
-            <div class="col-lg-3 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3 style='font-size:30px;'>返回</h3>
-                  <p>回控制台页面</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-ios-home-outline"></i>
-                </div>
-                <a href="/dashboard/" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div><!-- ./col -->
+            <a href="/dashboard/#mypatient">
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3 style='font-size:30px;'>我的病人</h3>
-                  <p>查看我的病人信息</p>
+                  <h3 style='font-size:30px;color:white;'>病人</h3>
+                  <p style='color:white;'>查看现有科室病人信息</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-funnel"></i>
+                  <i class="ion ion-ios-person"></i>
                 </div>
-                <a href="/dashboard/#mypatient" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
+            </a>
+            <a href="/dashboard/search/">
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
 	           <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3 style='font-size:30px;'>搜索 </h3>
-                  <p>自定义搜索 </p>
+                  <h3 style='font-size:30px;color:white;'>搜索 </h3>
+                  <p style='color:white;'>自定义搜索 </p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-plus-round"></i>
+                  <i class="ion ion-search"></i>
                 </div>
-                <a href="#" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
-            
+            </a>
+            <a href="#email">
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3 style='font-size:30px;color:white;'>邮件</h3>
+                  <p style='color:white;'>邮件联系其他医师</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-email"></i>
+                </div>
+              </div>
+            </div><!-- ./col -->
+            </a>
+            <a href="/admin/">
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3 style='font-size:30px;'>管理员</h3>
-                  <p>数据库管理</p>
+                  <h3 style='font-size:30px;color:white;'>管理员</h3>
+                  <p style='color:white;'>数据库管理</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-ios-cloud-download-outline"></i>
+                  <i class="ion ion-settings"></i>
                 </div>
-                <a href="/admin/" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
+            </a>
           </div><!-- /.row -->
           <!-- Main row -->
+
 
         <!-- Content Header (Page header) -->
         <section id='mypatient' class="content-header">
           <h1>
             我的病人
-            <small>输入以搜索</small>
           </h1>
         </section>
 
@@ -254,60 +258,58 @@ $(document).ready(function() {
         <section class="content">
           <div class="row">
             <div class="col-xs-12">
-
               <div class="box">
-
                 <div class="box-body">
-    {% if objs.count %}
-    <table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>数据库编号</th>
-                <th>姓名</th>
-                <th>病历号</th>                
-                <th>性别</th>
-                <th>出生年月</th>
-                <!--<th>身份证号</th>-->
-                <th>地区</th>
-                <th>随访电话</th>
-                <th>去世日期</th>
-                <th>关系</th>
-                <th>电话</th>
-                <th>Email</th>
-                <th>微信</th>
-                <th>在随访中</th>
+                  {% if objs.count %}
+                  <table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0" width="100%">
+                      <thead>
+                          <tr>
+                              <th>数据库编号</th>
+                              <th>姓名</th>
+                              <th>病历号</th>                
+                              <th>性别</th>
+                              <th>出生年月</th>
+                              <!--<th>身份证号</th>-->
+                              <th>地区</th>
+                              <th>随访电话</th>
+                              <th>去世日期</th>
+                              <th>关系</th>
+                              <th>电话</th>
+                              <th>Email</th>
+                              <th>微信</th>
+                              <th>在随访中</th>
 
-            </tr>
-        </thead>
+                          </tr>
+                      </thead>
 
-        <tbody>
-                {% for obj in objs %}
-                  <tr>
-                    <td><a href="{{obj.get_absolute_url}}">{{obj.DB_ID}}</a></td>
-                    <td>{{obj.name}}</td>
-                    <td>{{obj.EMR_id}}</td>
-                    <td>{{obj.sex}}</td>
-                    <td>{{obj.DOB}}</td>
-                    <!--<td>{{obj.social_id}}</td>-->
-                    <td>{{obj.location}}</td>
-                    <td>{{obj.phone}}</td>
-                    <td>{{obj.DOD}}</td>
-                    <td>{{obj.get_relative_display}}</td>
-                    <td>{{obj.relative_phone}}</td>
-                    <td>{{obj.relative_email}}</td>
-                    <td>{{obj.relative_wechat}}</td>
-                    <td>{{obj.get_relative_in_contact_display}}</td>
+                      <tbody>
+                              {% for obj in objs %}
+                                <tr>
+                                  <td><a href="{{obj.get_absolute_url}}">{{obj.DB_ID}}</a></td>
+                                  <td>{{obj.name}}</td>
+                                  <td>{{obj.EMR_id}}</td>
+                                  <td>{{obj.sex}}</td>
+                                  <td>{{obj.DOB}}</td>
+                                  <!--<td>{{obj.social_id}}</td>-->
+                                  <td>{{obj.location}}</td>
+                                  <td>{{obj.phone}}</td>
+                                  <td>{{obj.DOD}}</td>
+                                  <td>{{obj.get_relative_display}}</td>
+                                  <td>{{obj.relative_phone}}</td>
+                                  <td>{{obj.relative_email}}</td>
+                                  <td>{{obj.relative_wechat}}</td>
+                                  <td>{{obj.get_relative_in_contact_display}}</td>
 
-                  </tr>
+                                </tr>
 
-                {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-<div class="panel-body" style="width: 95%;margin-left:auto;margin-right:auto;">
-        <div class="well well-sm" style="margin-bottom: 2px;"><strong>数据库中找不到由您主治的病人！</div></strong>
-  </div>
-{% endif %}
+                              {% endfor %}
+                      </tbody>
+                  </table>
+                  {% else %}
+                  <div class="panel-body" style="width: 95%;margin-left:auto;margin-right:auto;">
+                      <div class="well well-sm" style="margin-bottom: 2px;"><strong>数据库中找不到由您主治的病人！</strong></div>
+                  </div>
+                  {% endif %}
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
             </div><!-- /.col -->
@@ -319,17 +321,15 @@ $(document).ready(function() {
 
 
 
-
-
-	<!--Chart section-->
+	      <!--Chart section-->
         <section class="content-header">
           <h1>
             图表（测试版）
             <small>病人数据统计</small>
           </h1>
         </section>
-	<section class="content" id='charts'>
-	   <div class="row">
+	       <section class="content" id='charts'>
+	         <div class="row">
             <div class="col-md-6">
               <!-- AREA CHART -->
               <div class="box box-primary">
@@ -357,8 +357,6 @@ $(document).ready(function() {
                   <div class="chart" id="status-chart" style="height: 300px; position: relative;"></div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
-		
-
             </div><!-- /.col (LEFT) -->
             <div class="col-md-6">
               <!-- LINE CHART -->
@@ -387,12 +385,111 @@ $(document).ready(function() {
                   <div class="chart" id="bar-chart" style="height: 300px;"></div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
-
             </div><!-- /.col (RIGHT) -->
           </div><!-- /.row -->
+        </section><!-- /.content -->
 
+
+        <!--email and other section-->
+
+         <section class="content" id='email'>
+           <div class="row">
+            <div class="col-md-6">
+              <!-- quick email widget -->
+              <div class="box box-info">
+                <div class="box-header">
+                  <i class="fa fa-envelope"></i>
+                  <h3 class="box-title">邮件联系</h3>
+                  
+                </div>
+                <div class="box-body">
+                  <form action="#" method="post">
+                    <div class="form-group">
+                      <input type="email" class="form-control" name="emailto" placeholder="发送至:" />
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="subject" placeholder="主题:" />
+                    </div>
+                    <div>
+                      <textarea class="textarea" placeholder="内容" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="box-footer clearfix">
+                  <button class="pull-right btn btn-default" id="sendEmail">发送 <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+              </div>
+
+              
+            </div><!-- /.col (LEFT) -->
+            <div class="col-md-6">
+              <!-- NOTE -->
+              <div class="box box-primary">
+                <div class="box-header with-border">
+                 <i class="ion ion-document-text"></i> 
+                  <h3 class="box-title">备注</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <ul class="products-list product-list-in-box">
+                  {%if posts%}
+                  {% for p in posts|slice:":5" %}
+                    <li class="item">
+                      <div class="product-info">
+                        <a href="/virtual/get/{{p.related_exp.experiment_id}}/" class="product-title">{{p.subject}}</a>
+                        <span class="product-description">
+                          {{p.content}}
+                          <p >Posted by {% autoescape off %}{{p.created_by.get_taged_investigator_name}}{% endautoescape %} on {{p.created_date}}</p>
+                          {%if p.updated_by.NTID != None %}
+                          <p>Last Modified by {% autoescape off %}{{p.updated_by.get_taged_investigator_name}}{% endautoescape %} on {{p.updated_date}}</p>
+                          {%endif%}
+                        </span>
+                      </div>
+                    </li><!-- /.item -->
+                  {% endfor %}
+                  {%else%}
+                    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+                      <div class="panel-heading" >
+                        <h4>暂无备注</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    </div>
+                  {%endif%}
+                  </ul>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+              
+            </div><!-- /.col (RIGHT) -->
+          </div><!-- /.row -->
         </section><!-- /.content -->
 
 
 
+
+
+            </section><!-- right col -->
+          </div><!-- /.row (main row) -->
+
+        </section><!-- /.content -->
+
+
 {%endblock%}
+
+<!--
+<section class="content" id='charts'>
+           <div class="row">
+            <div class="col-md-6">
+
+              
+            </div>
+
+            <div class="col-md-6">
+
+              
+            </div>
+        </section>
+
+-->

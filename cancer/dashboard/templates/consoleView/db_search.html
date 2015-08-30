@@ -171,7 +171,6 @@
         <section class="content-header">
           <h1>
             {{db_name_ch}}数据库
-            <small>输入以搜索</small>
             <small><div id="download-csv"><i class="ion ion-ios-cloud-download-outline" style='margin-left:20px;' alt='click to download'>&nbsp;下载数据库</i></div></small>
           </h1>
         </section>
@@ -188,7 +187,6 @@
     <table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>数据库编号</th>
                 <th>姓名</th>
                 <th>病历号</th>
                 
@@ -325,9 +323,8 @@
         <tbody>
                 {% for obj in objs %}
                         <tr>
-                            <td><a href="{{obj.get_absolute_url}}">{{obj.DB_ID}}</a></td>
-                            <td>{{obj.name}}</td>
-                            <td>{{obj.EMR_id}}</td>
+                            <td><a href="{{obj.get_absolute_url}}">{{obj.name}}</a></td>
+                            <td><a href="{{obj.get_absolute_url}}">{{obj.EMR_id}}</a></td>
 
                             {% if db_name == "patient" %}
                                 <td>{{obj.sex}}</td>
