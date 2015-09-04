@@ -20,6 +20,32 @@
       width: 20%;
   }
   .filterMatches { background-color: #FFFF00; }
+  /*http://jsfiddle.net/UNs9J/1/*/
+  span1{
+    overflow: auto;
+    background:#F8F8F8;
+    border: 5px solid #DFDFDF;
+    color: #717171;
+    font-size: 13px;
+    height: 200px;
+    letter-spacing: 1px;
+    line-height: 30px;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    top: 10px;
+    left:0px;
+    display:none;
+    padding:0 20px;
+    
+}
+
+
+
+a:hover span1{
+    display:block;
+}
+
 
   </style>
 
@@ -175,6 +201,7 @@
 </ul>
 
 
+
 <ul class="nav nav-tabs">
   <li class="active"><a href="#home" data-toggle="tab" >病人基本信息</a></li>
   <li class=""><a href="#cancer" data-toggle="tab" >肿瘤基本信息</a></li>
@@ -206,18 +233,8 @@
 
   <div class="tab-pane fade active in" id="home">
 
-
-<!--
-   <div class="panel panel-success" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
-    <div class="panel-heading" >
-      <h3>病人基本信息</h3>
-    </div>
-  </div>
--->
-
         <!-- Main content -->
         <section class="content">
-
 
           <div class="row">
             <div class="col-md-12">
@@ -242,101 +259,122 @@
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                <div class="row">
-                <div class="col-md-4"><!-- /.col basic info table-->
-                      <p class="text-center">
-                       <strong>基本信息</strong>
-                      </p>
-                    <div class="box">
-                    
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:245px;">
-                      <table class="table table-hover">
+                  <div class="row">
+                  
+                    <div class="col-md-4"><!-- /.col basic info table-->
+                        <p class="text-center">
+                         <strong>基本信息</strong>
+                        </p>
+                        <div class="box">
+                          <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px;">
+                            <table class="table table-hover">
 
-                        <tr>
-                          <td><strong>姓名: {{patient.name}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>性别: {{patient.sex}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>出生年月: {{patient.DOB}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>地区: {{patient.location}}</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>数据库编号(病历号): {{patient.DB_ID}}({{patient.EMR_id}})</strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>随访电话: {{patient.phone}}</strong></td>
-                        </tr>
+                              <tr>
+                                <td><strong>姓名: {{patient.name}}</strong></td>
+                              </tr>
+                              <tr>
+                                <td><strong>性别: {{patient.sex}}</strong></td>
+                              </tr>
+                              <tr>
+                                <td><strong>出生年月: {{patient.DOB}}</strong></td>
+                              </tr>
+                              <tr>
+                                <td><strong>地区: {{patient.location}}</strong></td>
+                              </tr>
+                              <tr>
+                                <td><strong>数据库编号(病历号): {{patient.DB_ID}}({{patient.EMR_id}})</strong></td>
+                              </tr>
+                              <tr>
+                                <td><strong>随访电话: {{patient.phone}}</strong></td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <strong>诊断: 
+                                    {%for cancer in cancers%}
+                                    {%if cancer.diagnosis%}
+                                      {{cancer.diagnosis}}({{cancer.admission_date}})
+                                      <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {%endif%}
+                                    {%endfor%}
+                                  </strong>
+                                </td>
+                              </tr>
 
+                            </table>
+                          </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div><!-- /.col basic info table-->
+                        
+                    <div class="col-md-8" ><!-- /.col basic info table-->
+                        <p class="text-center">
+                         <strong>临床事件</strong>
+                        </p>
+                      <div class="box">
+                        
+                        <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px;">
+                          {%if tests%}
+                            <table class="table table-hover">
+                              {%for test in tests%}
+                              <col width="15%">
+                              <col width="15%">
+                              <col width="70%">
+                              {%if test.result_discription%}
+                              
+                              <tr>
+                                <td><strong>{{test.get_project_name_display}}</strong></td>
+                                <td>{{test.project_date}}</td>
+                                <td>结果描述: {{test.result_discription}}({{test.project_date}})</td>
+                              </tr>
+                              {%endif%}
+                              {%if test.diagosis%}
+                              <tr>
+                                <td><strong>{{test.get_project_name_display}}</strong></td>
+                                <td>{{test.project_date}}</td>
+                                <td>诊断结论: {{test.diagosis}}({{test.project_date}})</td>
+                              </tr>
+                              {%endif%}
+                              {%endfor%}
 
-                      </table>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
+                              {%for cancer in cancers%}
+                              <col width="15%">
+                              <col width="15%">
+                              <col width="70%">
+                              {%if cancer.diagnosis%}
+                              <tr>
+                                <td><strong>诊断</strong></td>
+                                <td>{{cancer.admission_date}}</td>
+                                <td>{{cancer.diagnosis}}</td>
+                              </tr>
+                              {%endif%}
+                              {%endfor%}
 
-                </div><!-- /.col basic info table-->
-                    
-                <div class="col-md-8" ><!-- /.col basic info table-->
-                      <p class="text-center">
-                       <strong>临床事件</strong>
-                      </p>
-                    <div class="box">
-                    
-                    <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:245px;">
-                      {%if tests%}
-                      <table class="table table-hover">
-                        {%for test in tests%}
-                        {%if test.result_discription%}
-                        <tr>
-                          <td><strong>{{test.get_project_name_display}}</strong></td>
-                          <td>结果描述: {{test.result_discription}}({{test.project_date}})</td>
-                        </tr>
-                        {%endif%}
-                        {%if test.diagosis%}
-                        <tr>
-                          <td><strong>{{test.get_project_name_display}}</strong></td>
-                          <td>诊断结论: {{test.diagosis}}({{test.project_date}})</td>
-                        </tr>
-                        {%endif%}
-                        {%endfor%}
-
-                        {%for cancer in cancers%}
-                        {%if cancer.diagnosis%}
-                        <tr>
-                          <td><strong>诊断</strong></td>
-                          <td>{{cancer.diagnosis}}({{cancer.admission_date}})</td>
-                        </tr>
-                        {%endif%}
-                        {%endfor%}
-
-                        {%for treatment in treatments%}
-                        {%if treatment.surgery_date%}
-                        <tr>
-                          <td><strong>{{treatment.location}}{{treatment.approach}}手术</strong></td>
-                          <td>{{treatment.surgery_date}}({{treatment.surgeon}})</td>
-                        </tr>
-                        {%endif%}
-                        {%endfor%}
-
-                      </table>
-                      {%else%}
-                    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
-                      <div class="panel-heading" >
-                        <h4>暂无临床事件</h4>
-                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
-                      </div>
-                    </div>
-                  {%endif%}
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-
-                </div><!-- /.col basic info table-->
-
-
+                              {%for treatment in treatments%}
+                              <col width="15%">
+                              <col width="15%">
+                              <col width="70%">
+                              {%if treatment.surgery_date%}
+                              <tr>
+                                <td><strong>{{treatment.location}}{{treatment.approach}}手术</strong></td>
+                                <td>{{treatment.surgery_date}}</td>
+                                <td>{{treatment.surgeon}}</td>
+                              </tr>
+                              {%endif%}
+                              {%endfor%}
+                            </table>
+                          {%else%}
+                            <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+                              <div class="panel-heading" >
+                                <h4>暂无临床事件</h4>
+                                <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                              </div>
+                            </div>
+                          {%endif%}
+                        </div><!-- /.box-body -->
+                      </div><!-- /.box -->
+                    </div><!-- /.col basic info table-->
                   </div><!-- /.row -->
                 </div><!-- ./box-body -->
+
                 <div class="box-footer">
                   <div class="row">
                     <div class="col-sm-3 col-xs-6">
@@ -365,6 +403,7 @@
                     </div>
                   </div><!-- /.row -->
                 </div><!-- /.box-footer -->
+
               </div><!-- /.box -->
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -380,106 +419,103 @@
                   <h3 class="box-title">重要事件时间轴 (beta)</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-         
+                  <section class="content">
+                    <!-- row -->
+                    <div class="row">
+                      <div class="col-md-12" style="overflow-y: scroll; height:500px;">
+                        <!-- The time line -->
+                        <ul class="timeline">
+                          <!-- timeline time label -->
+                          <li class="time-label">
+                            <span class="bg-red">
+                              2015/08
+                            </span>
+                          </li>
+                          <!-- /.timeline-label -->
+                          <!-- timeline item -->
+                          {%for cancer in cancers%}
+                          <li>
+                            <i class="fa fa-heartbeat bg-yellow"></i>
+                            <div class="timeline-item">
+                              <span class="time"><i class="fa fa-clock-o"></i> {{cancer.admission_date}}</span>
+                              <h3 class="timeline-header"><a href="#">肿瘤信息</a>诊断  <a >详细信息
+                                <span1><p>诊断详情：{{cancer.diagnosis}}<br>
+                                       诊断依据：{{cancer.diagnosis_basis}}<br>
+                                       入院日期：{{cancer.admission_date}}<br>
+                                       出院日期：{{cancer.discharge_date}}</p>
+                                </span1></a>
+                              </h3>
+                              <div class="timeline-body">
+                                {{cancer.diagnosis}}
+                              </div>
+                            </div>
+                          </li>
+                          <!-- END timeline item -->
+                          {%endfor%}
 
+                          {%for test in tests%}
+                          <!-- timeline item -->
+                          <li>
+                            <i class="fa fa-stethoscope bg-aqua"></i>
+                            <div class="timeline-item">
+                              <span class="time"><i class="fa fa-clock-o"></i> {{test.project_date}}</span>
+                              <h3 class="timeline-header no-border"><a href="#">{{test.get_project_name_display}}</a>结果描述  <a >详细信息
+                                <span1><p>项目日期：{{test.project_date}}<br>
+                                       项目名称：{{test.project_name}}<br>
+                                       结果描述：{{test.result_discription}}<br>
+                                       诊断：{{test.diagosis}}<br>
+                                       </p>
+                                </span1></a>
+                              </h3>
+                              <div class="timeline-body">
+                                {{test.result_discription}}
+                              </div>
+                            </div>
+                          </li>
+                          <!-- END timeline item -->
+                          {%endfor%}
 
-        <section class="content">
-
-          <!-- row -->
-          <div class="row">
-            <div class="col-md-12" style="overflow-y: scroll; height:450px;">
-              <!-- The time line -->
-              <ul class="timeline">
-                <!-- timeline time label -->
-                <li class="time-label">
-                  <span class="bg-red">
-                    2015/08
-                  </span>
-                </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                {%for cancer in cancers%}
-                <li>
-                  <i class="fa fa-heartbeat bg-yellow"></i>
-                  <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> {{cancer.admission_date}}</span>
-                    <h3 class="timeline-header"><a href="#">肿瘤信息</a>诊断  <a class="btn btn-primary btn-xs">详细信息</a></h3>
-                    <div class="timeline-body">
-                      {{cancer.diagnosis}}
-                    </div>
-                  </div>
-                </li>
-                <!-- END timeline item -->
-                {%endfor%}
-
-                {%for test in tests%}
-                <!-- timeline item -->
-                <li>
-                  <i class="fa fa-stethoscope bg-aqua"></i>
-                  <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> {{test.project_date}}</span>
-                    <h3 class="timeline-header no-border"><a href="#">{{test.get_project_name_display}}</a>结果描述  <a class="btn btn-primary btn-xs">详细信息</a></h3>
-                    <div class="timeline-body">
-                      {{test.result_discription}}
-                    </div>
-                  </div>
-                </li>
-                <!-- END timeline item -->
-                {%endfor%}
-
-                <!-- timeline time label -->
-                <li class="time-label">
-                  <span class="bg-green">
-                    2014/08
-                  </span>
-                </li>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <li>
-                  <i class="fa fa-camera bg-purple"></i>
-                  <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> 2014/07/22</span>
-                    <h3 class="timeline-header"><a href="#">检查结果</a> 胸透</h3>
-                    <div class="timeline-body">
-                      <img src="http://placehold.it/150x100" alt="..." class="margin">
-                      <img src="http://placehold.it/150x100" alt="..." class="margin">
-                      <img src="http://placehold.it/150x100" alt="..." class="margin">
-                      <img src="http://placehold.it/150x100" alt="..." class="margin">
-                    </div>
-                  </div>
-                </li>
-                <!-- END timeline item -->
-                
-                <li>
-                  <i class="fa fa-clock-o bg-gray"></i>
-                </li>
-              </ul>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-
-        </section><!-- /.content -->
-
+                          <!--
+                          <li class="time-label">
+                            <span class="bg-green">
+                              2014/08
+                            </span>
+                          </li>
+                          <li>
+                            <i class="fa fa-camera bg-purple"></i>
+                            <div class="timeline-item">
+                              <span class="time"><i class="fa fa-clock-o"></i> 2014/07/22</span>
+                              <h3 class="timeline-header"><a href="#">检查结果</a> 胸透</h3>
+                              <div class="timeline-body">
+                                <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                <img src="http://placehold.it/150x100" alt="..." class="margin">
+                              </div>
+                            </div>
+                          </li>
+                          -->
+                          
+                          <li>
+                            <i class="fa fa-clock-o bg-gray"></i>
+                          </li>
+                        </ul>
+                      </div><!-- /.col -->
+                    </div><!-- /.row -->
+                  </section><!-- /.content -->
                 </div><!-- /.box-body -->
-    <!--
-                <div class="box-footer clearfix no-border">
-                  <button class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
-                </div>
-    -->
               </div><!-- /.box -->
-
-
-
             </section><!-- /.Left col -->
+            
             <!-- right col (We are only adding the ID to make the widgets sortable)-->
             <section class="col-lg-5 connectedSortable">
 
-
-            
               <!-- TABLE: LATEST ORDERS -->
               <div class="box box-info">
                 <div class="box-header with-border">
                  <i class="ion ion-android-cloud-done"></i> 
-     <h3 class="box-title">相似病人（beta）</h3>
+
+                  <h3 class="box-title">相似病人（beta）</h3>
                   <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -497,7 +533,7 @@
                       </thead>
                       <tbody>
                       {% autoescape off %}{{ finished }}{% endautoescape %}
-          </tbody>
+                      </tbody>
                     </table>
                   </div><!-- /.table-responsive -->
                 </div><!-- /.box-body -->
@@ -542,10 +578,8 @@
                       </div>
                     </div>
                   {%endif%}
-
                   </ul>
                 </div><!-- /.box-body -->
-
               </div><!-- /.box -->
 
 
@@ -573,142 +607,511 @@
                   <button class="pull-right btn btn-default" id="sendEmail">发送 <i class="fa fa-arrow-circle-right"></i></button>
                 </div>
               </div>
-
-
             </section><!-- right col -->
+          
           </div><!-- /.row (main row) -->
-
-        </section><!-- /.content -->
-
-
-
-
-
-
-
-
-
-
-
-
- </div> <!--tab 1-->
+        </section>
+  </div> <!--tab 1-->
  
 
- <div class="tab-pane fade" id="cancer">
-<!-- Post Section -->
+  <div class="tab-pane fade" id="cancer">
+  	<section class="content">
+    <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
+  	  <div class="panel-heading" >
+  	    <h3>肿瘤基本信息</h3>
+  	  </div>
+      <!-- START ACCORDION & CAROUSEL-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="box-group" id="accordion">
+                    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                    {% if not cancers %}
+                      <div class="panel-heading" >
+                        <h4>暂无肿瘤基本信息记录</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    {% else %}
+                    {% for cancer in cancers%}
 
-	<div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
-	  <div class="panel-heading" >
-	    <h3>肿瘤基本信息</h3>
-	  </div>
-	</div>
+                    <div class="panel box box-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-cancer-{{forloop.counter}}">
+                            入院日期：{{cancer.admission_date}} - 出院日期： {{cancer.discharge_date}}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-cancer-{{forloop.counter}}" class="panel-collapse collapse">
+                        <div class="box-body">
+                          <div class="box">
+                            <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px">
+                              <table class="table table-hover">
 
+                                <tr>
+                                  <td><strong>住院科室: {{cancer.get_department_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>术前诊断: {{cancer.pre_diagnosis}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>最终诊断: {{cancer.diagnosis}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>诊断依据: {{cancer.get_diagnosis_basis_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>肿瘤性质: {{cancer.get_cancer_property_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>肿瘤分类: {{cancer.get_cancer_type_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>肿瘤复发: {{cancer.get_recurrence_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>脊柱病灶数目: {{cancer.get_focus_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>肿瘤部位: {{cancer.get_location_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>脊柱外骨累及: {{cancer.get_infection_spinal_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>原发灶外重要脏器累及: {{cancer.get_infection_organ_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>重要脏器累及可控制: {{cancer.get_infection_organ_controllable_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>备注: {{cancer.comment}}</strong></td>
+                                </tr>
+                              </table>
+                            </div><!-- /.box-body -->
+                          </div><!-- /.box -->
+                        </div>
+                      </div>
+                    </div>
+                    {%endfor%}
+                    {%endif%}
 
-<table class="table table-bordered table-striped" id="recent" class="display" cellspacing="0" width="90%">
-  <thead>
-    <tr>
-      <th>数据库编号</th>
-      <th>姓名</th>
-      <th>病历号</th>
-      <th>入院日期</th>
-      <th>出院日期</th>
-      <th>住院科室</th>
-      <th>术前诊断</th>
-      <th>最终诊断</th>
-      <th>诊断依据</th>
-      <th>肿瘤性质</th>
-      <th>肿瘤分类</th>
-      <th>肿瘤复发</th>
-      <th>脊柱病灶数目</th>
-      <th>肿瘤部位</th>
-      <th>脊柱外骨累及</th>
-      <th>原发灶外重要脏器累及</th>
-      <th>重要脏器累及可控制</th>
-      <th>备注</th>
-    </tr>
-  </thead>
-
-  <tbody>
-  {% for cancer in cancers %}
-  <tr>
-      <td><a href="{{cancer.get_absolute_url}}">{{cancer.DB_ID}}</a></td>
-      <td>{{cancer.name}}</td>
-      <td>{{cancer.EMR_id}}</td>
-      <td>{{cancer.admission_date}}</td>
-      <td>{{cancer.discharge_date}}</td>
-      <td>{{cancer.get_department_display}}</td>
-      <td>{{cancer.pre_diagnosis}}</td>
-      <td>{{cancer.diagnosis}}</td>
-      <td>{{cancer.get_diagnosis_basis_display}}</td>
-      <td>{{cancer.get_cancer_property_display}}</td>
-      <td>{{cancer.get_cancer_type_display}}</td>
-      <td>{{cancer.get_recurrence_display}}</td>
-      <td>{{cancer.get_focus_display}}</td>
-      <td>{{cancer.get_location_display}}</td>
-      <td>{{cancer.get_infection_spinal_display}}</td>
-      <td>{{cancer.get_infection_organ_display}}</td>
-      <td>{{cancer.get_infection_organ_controllable_display}}</td>
-      <td>{{cancer.comment}}</td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
-
-
- </div>  <!--tab 2-->
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+      </div><!--end-->
+  	</div>
+  </section>
+  </div>  <!--tab 2-->
 
 
   <div class="tab-pane fade" id="symptom">
+    <section class="content">
     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
       <div class="panel-heading" >
         <h3>症状与体征</h3>
       </div>
-    </div>
-        
+          <!-- START ACCORDION & CAROUSEL-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="box-group" id="accordion">
+                    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                    {% if not symptoms %}
+                      <div class="panel-heading" >
+                        <h4>暂无治疗情况记录</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    {% else %}
+                    {% for symptom in symptoms%}
 
+                    <div class="panel box box-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-symptom-{{forloop.counter}}">
+                            入院日期：{{symptom.admission_date}}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-symptom-{{forloop.counter}}" class="panel-collapse collapse ">
+                        <div class="box-body">
+                          <div class="box">
+                            <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px">
+                              <table class="table table-hover">
+
+                                <tr>
+                                  <td><strong>疼痛VAS（轻中重）t为不清: {{symptom.pain_VAS}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>夜间痛: {{symptom.get_night_pain_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>疼痛需卧床缓解: {{symptom.get_stay_in_bed_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>根性疼痛: {{symptom.get_root_pain_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>肢体麻木无力: {{symptom.get_numb_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>体表包块: {{symptom.get_enclosed_mass_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>小便异常: {{symptom.get_abnormal_urine_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>病程时间（月）: {{symptom.duration}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>最重病变水平以远肌力: {{symptom.get_muscle_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>最重病变水平以远感觉: {{symptom.get_feel_display}}</strong></td>
+                                </tr>
+                              </table>
+                            </div><!-- /.box-body -->
+                          </div><!-- /.box -->
+                        </div>
+                      </div>
+                    </div>
+                    {%endfor%}
+                    {%endif%}
+
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+      </div><!--end-->
+    </div>
+  </section>
   </div> <!--tab 3-->
 
   <div class="tab-pane fade" id="treatment">
+    <section class="content">
     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
       <div class="panel-heading" >
         <h3>治疗情况</h3>
-      </div>
-    </div>
-        
 
+          <!-- START ACCORDION & CAROUSEL-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="box-group" id="accordion">
+                    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                    {% if not treatments %}
+                      <div class="panel-heading" >
+                        <h4>暂无治疗情况记录</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    {% else %}
+                    {% for treatment in treatments%}
+
+                    <div class="panel box box-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-treatment-{{forloop.counter}}">
+                            手术日期：{{treatment.surgery_date}} - 术者： {{treatment.surgeon}}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-treatment-{{forloop.counter}}" class="panel-collapse collapse ">
+                        <div class="box-body">
+                          <div class="box">
+                            <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px">
+                              <table class="table table-hover">
+
+                                    <tr><td><strong>手术入路: {{treatment.get_approach_display}}</strong></td>
+                                    <tr><td><strong>手术部位: {{treatment.get_location_display}}</strong></td>
+                                    <tr><td><strong>手术方式: {{treatment.get_method_display}}</strong></td>
+                                    <tr><td><strong>肿瘤包膜破损情况: {{treatment.envelope_damage}}</strong></td>
+                                    <tr><td><strong>为保证边界牺牲的组织: {{treatment.sacrifice}}</strong></td>
+                                    <tr><td><strong>术中骨水泥强化: {{treatment.bone_cement}}</strong></td>
+                                    <tr><td><strong>术中射频消融: {{treatment.radiofrequency}}</strong></td>
+                                    <tr><td><strong>手术总时间（min）: {{treatment.total_time}}</strong></td>
+                                    <tr><td><strong>出血量（ml）: {{treatment.bleeding_vol}}</strong></td>
+                                    <tr><td><strong>异体血（ml）: {{treatment.allogeneic_blood}}</strong></td>
+                                    <tr><td><strong>术中并发症: {{treatment.surgery_complication}}</strong></td>
+                                    <tr><td><strong>术中备注: {{treatment.surgery_comment}}</strong></td>
+                                    <tr><td><strong>术后并发症: {{treatment.get_post_complication_display}}</strong></td>
+                                    <tr><td><strong>动脉栓塞（方式）: {{treatment.arterial_embolization_method}}</strong></td>
+                                    <tr><td><strong>动脉栓塞（动脉名称）: {{treatment.arterial_embolization_name}}</strong></td>
+                                    <tr><td><strong>经皮骨水泥加强（节段）: {{treatment.bone_cement_num}}</strong></td>
+                                    <tr><td><strong>经皮骨水泥加强（部位）: {{treatment.get_bone_cement_location_display}}</strong></td>
+                                    <tr><td><strong>支具支持治疗（支具类型）: {{treatment.get_support_therapy_type_display}}</strong></td>
+                                    <tr><td><strong>支具支持治疗（开始年月）: {{treatment.support_therapy_start_date}}</strong></td>
+                                    <tr><td><strong>放疗（总剂量 Gy）: {{treatment.radiotherapy_dose}}</strong></td>
+                                    <tr><td><strong>放疗（疗程）: {{treatment.radiotherapy_course}}</strong></td>
+                                    <tr><td><strong>放疗（开始日期）: {{treatment.radiotherapy_start_date}}</strong></td>
+                                    <tr><td><strong>化疗（方案）: {{treatment.chemotherapy_plan}}</strong></td>
+                                    <tr><td><strong>化疗（开始日期）: {{treatment.chemotherapy_start_date}}</strong></td>
+                                    <tr><td><strong>其他治疗（药物）: {{treatment.get_other_treatment_drug_display}}</strong></td>
+                                    <tr><td><strong>其他治疗（开始日期）: {{treatment.other_treatment_start_date}}</strong></td>
+                                    <tr><td><strong>其他治疗（结束日期）: {{treatment.other_treatment_end_date}}</strong></td>
+                                    <tr><td><strong>其他描述: {{treatment.comment}}</strong></td>
+
+                              </table>
+                            </div><!-- /.box-body -->
+                          </div><!-- /.box -->
+                        </div>
+                      </div>
+                    </div>
+                    {%endfor%}
+                    {%endif%}
+
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div>
+      </div>
+    </div>    
+  </section>
   </div> <!--tab 4-->
 
   <div class="tab-pane fade" id="test">
+    <section class="content">
     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
       <div class="panel-heading" >
         <h3>辅助检查</h3>
       </div>
-    </div>
-        
 
+      <!-- START ACCORDION & CAROUSEL-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="box-group" id="accordion">
+                    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                    {% if not tests %}
+                      <div class="panel-heading" >
+                        <h4>暂无辅助检查记录</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    {% else %}
+                    {% for test in tests%}
+
+                    <div class="panel box box-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-test-{{forloop.counter}}">
+                            项目名称：{{test.project_name}} - 项目日期： {{test.project_date}}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-test-{{forloop.counter}}" class="panel-collapse collapse">
+                        <div class="box-body">
+                          <div class="box">
+                            <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px">
+                              <table class="table table-hover">
+
+                                <tr>
+                                  <td><strong>结果描述: {{test.result_discription}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>诊断结论: {{test.diagosis}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>是否术前检查: {{test.get_pre_test_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>WBB分期(1-12): {{test.wbb_1_12}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>WBB分期(A-F): {{test.wbb_A_F}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>CT病变性质: {{test.get_CT_property_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>X光顺列: {{test.get_X_ray_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>塌陷: {{test.get_collapse_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>后外侧受累: {{test.get_lateral_involvement_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>椎动脉受累: {{test.vertebral_artery_involvement}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>Enneking分期: {{test.enneking}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>备注: {{test.comment}}</strong></td>
+                                </tr>
+                              </table>
+                            </div><!-- /.box-body -->
+                          </div><!-- /.box -->
+                        </div>
+                      </div>
+                    </div>
+                    {%endfor%}
+                    {%endif%}
+
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+      </div><!--end-->
+
+    </div>
+  </section>
   </div> <!--tab 5-->
 
   <div class="tab-pane fade" id="followup">
+    <section class="content">
     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
       <div class="panel-heading" >
         <h3>随访情况</h3>
       </div>
-    </div>
-        
+          <!-- START ACCORDION & CAROUSEL-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="box-group" id="accordion">
+                    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                    {% if not followups %}
+                      <div class="panel-heading" >
+                        <h4>暂无随访情况记录</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    {% else %}
+                    {% for followup in followups%}
 
+                    <div class="panel box box-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-followup-{{forloop.counter}}">
+                            主诉： {{followup.major_complain}} - 随访日期： {{followup.followup_date}}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-followup-{{forloop.counter}}" class="panel-collapse collapse ">
+                        <div class="box-body"> <!--{% if forloop.counter == 1 %}in{% endif %}-->
+                          <div class="box">
+                            <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px">
+                              <table class="table table-hover">
+
+                                <tr>
+                                  <td><strong>复发: {{followup.get_recurrence_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>转移: {{followup.get_transfer_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>内固定松动: {{followup.get_fixation_loose_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>内固定断裂: {{followup.get_fixation_break_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>CT融合: {{followup.get_CT_fusion_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>随访方式: {{followup.get_method_display}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>死亡日期: {{followup.DOD}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>备注: {{followup.comment}}</strong></td>
+                                </tr>
+                              </table>
+                            </div><!-- /.box-body -->
+                          </div><!-- /.box -->
+                        </div>
+                      </div>
+                    </div>
+                    {%endfor%}
+                    {%endif%}
+
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+      </div><!--end-->
+
+    </div>
+    </section>
   </div> <!--tab 6-->
 
   <div class="tab-pane fade" id="questionnaire">
+    <section class="content">
     <div class="panel panel-info" style="width:95%;margin-top:20px;margin-left:auto;margin-right:auto;">
       <div class="panel-heading" >
         <h3>问卷评分</h3>
       </div>
-    </div>
-        
 
+          <!-- START ACCORDION & CAROUSEL-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box box-solid">
+                <div class="box-body">
+                  <div class="box-group" id="accordion">
+                    <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                    {% if not questionnaires %}
+                      <div class="panel-heading" >
+                        <h4>暂无问卷评分记录</h4>
+                        <small class="description-percentage"><a href='#' ><i class="ion ion-compose" style='margin-left:20px;' alt='点击以编辑'>&nbsp;点击以添加（beta）&nbsp;</i></a></small>
+                      </div>
+                    {% else %}
+                    {% for questionnaire in questionnaires%}
+
+                    <div class="panel box box-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-questionnaire-{{forloop.counter}}">
+                            问卷日期： {{questionnaire.date}}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse-questionnaire-{{forloop.counter}}" class="panel-collapse collapse ">
+                        <div class="box-body">
+                          <div class="box">
+                            <div class="box-body table-responsive no-padding" style="overflow-y: scroll; height:260px">
+                              <table class="table table-hover">
+
+                                <tr>
+                                  <td><strong>EQ5D-1: {{questionnaire.EQ5D_1}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>EQ5D-2: {{questionnaire.EQ5D_2}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>EQ5D-3: {{questionnaire.EQ5D_3}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>EQ5D-4: {{questionnaire.EQ5D_4}}</strong></td>
+                                </tr>
+                                <tr>
+                                  <td><strong>EQ5D-5: {{questionnaire.EQ5D_5}}</strong></td>
+                                </tr>
+                              </table>
+                            </div><!-- /.box-body -->
+                          </div><!-- /.box -->
+                        </div>
+                      </div>
+                    </div>
+                    {%endfor%}
+                    {%endif%}
+
+                  </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+      </div><!--end-->
+
+    </div>
+    </section>
   </div> <!--tab 7-->
 
 </div>
-
 {% endblock %}
 

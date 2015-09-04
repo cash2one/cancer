@@ -187,7 +187,7 @@ $(document).ready(function() {
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content"style="padding-bottom: 0px;">
 
           <!-- Small boxes (Stat box) -->
           <div class="row">
@@ -269,7 +269,6 @@ $(document).ready(function() {
                   <table class="table table-bordered table-striped " id="recent" class="display" cellspacing="0">
                       <thead>
                           <tr>
-                              <th>数据库编号</th>
                               <th>姓名</th>
                               <th>病历号</th>                
                               <th>性别</th>
@@ -290,9 +289,8 @@ $(document).ready(function() {
                       <tbody>
                               {% for obj in objs %}
                                 <tr>
-                                  <td><a href="{{obj.get_absolute_url}}">{{obj.DB_ID}}</a></td>
-                                  <td>{{obj.name}}</td>
-                                  <td>{{obj.EMR_id}}</td>
+                                  <td><a href="{{obj.get_absolute_url}}">{{obj.name}}</a></td>
+                                  <td><a href="{{obj.get_absolute_url}}">{{obj.EMR_id}}</a></td>
                                   <td>{{obj.sex}}</td>
                                   <td>{{obj.DOB}}</td>
                                   <!--<td>{{obj.social_id}}</td>-->

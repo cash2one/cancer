@@ -39,7 +39,6 @@
                 -->
             </tr>
             <tr>
-                <th>数据库编号</th>
                 <th>姓名</th>
                 <th>病历号</th>
                 <th>性别</th>
@@ -66,9 +65,8 @@
         <tbody>
                 {% for patient in patients %}
                 <tr>
-                    <td><a href="{{patient.get_absolute_url}}">{{patient.DB_ID}}</a></td>
-                    <td>{{patient.name}}</td>
-                    <td>{{patient.EMR_id}}</td>
+                    <td><a href="{{patient.get_absolute_url}}">{{patient.name}}</a></td>
+                    <td><a href="{{patient.get_absolute_url}}">{{patient.EMR_id}}</a></td>
                     <td>{{patient.sex}}</td>
                     <td>{{patient.DOB}}</td>
 
@@ -184,7 +182,7 @@
 
         } );
 
-        var HIDDEN_COLUMN_INDEX = 5;
+        var HIDDEN_COLUMN_INDEX = 4;
 
         table.on('search', function () {
             if (table.search().length) {
